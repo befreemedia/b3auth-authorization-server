@@ -9,11 +9,58 @@
     <version>0.1</version>
 
     <name>b3auth-authorization-server</name>
+    <description>
+        This project is custom authentication and authorization(!) library, that works with b3auth-resource-server.
+        It uses b3auth protocol and will be added to RFC soon.
+    </description>
     <url>https://github.com/befreemedia/b3auth-authorization-server/</url>
 
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Michał Chruścielski</name>
+            <email>michal.chruscielski@befreemedia.co</email>
+            <organization>BeFree (unregistered organization)</organization>
+            <organizationUrl>https://befreemedia.co</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:befreemedia/b3auth-authorization-server.git</connection>
+        <developerConnection>scm:git:ssh://github.com:befreemedia/b3auth-authorization-server.git</developerConnection>
+        <url>https://github.com/befreemedia/b3auth-authorization-server/tree/main</url>
+    </scm>
+
+<!--todo add distribution managment etc    -->
+
     <properties>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>9.31</version>
+        </dependency>
+    </dependencies>
 </project>

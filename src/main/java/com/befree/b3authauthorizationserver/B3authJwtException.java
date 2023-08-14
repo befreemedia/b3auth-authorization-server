@@ -1,5 +1,4 @@
 package com.befree.b3authauthorizationserver;
 
-public class GreetingMojo
-{
+public class B3authJwtException {
 }

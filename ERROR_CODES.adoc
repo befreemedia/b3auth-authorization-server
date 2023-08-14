@@ -1,0 +1,18 @@
+= B3auth Authorization Server error codes
+Author Name <Michał Chruścielski>
+v0.1, 29-06-2024
+:toc:
+// :homepage: todo dodac repo
+
+This document provides full list of error codes returned by *B3auth authorization server*.
+
+Every section contains errors from different endpoint.
+
+== Error types
+* `B5XXX` - server error, some method or class is used contrary to documentation
+* `B4XXX` - request error
+
+== Endpoints
+
+Authentication `/b3auth/authenticate`::
+* `*B5001* Authentication class type` - wrong authentication provider was chosen. `authenticate` method in `AuthenticationProvider` class bean *is required to return `B3authAuthenticationToken`* and not for example `UsernameAndPasswordAuthententicationToken`
