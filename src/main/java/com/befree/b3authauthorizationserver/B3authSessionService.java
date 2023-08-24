@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 
 import java.util.UUID;
 
-public interface B3authTokenService {
+public interface B3authSessionService {
         void save(B3authToken token);
 
         void remove(B3authToken token);

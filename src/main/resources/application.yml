@@ -1,0 +1,3 @@
+b3auth:
+  authorization-server:
+    issuer: https://domain.com

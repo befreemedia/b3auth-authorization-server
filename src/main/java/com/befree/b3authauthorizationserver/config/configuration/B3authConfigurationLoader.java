@@ -1,6 +1,6 @@
 package com.befree.b3authauthorizationserver.config.configuration;
 
-import com.befree.b3authauthorizationserver.B3authTokenService;
+import com.befree.b3authauthorizationserver.B3authSessionService;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -42,17 +42,17 @@ public final class B3authConfigurationLoader {
         return jwkSource;
     }
 
-    public static B3authTokenService getB3authTokenService(HttpSecurity httpSecurity) {
-        B3authTokenService tokenService = httpSecurity.getSharedObject(B3authTokenService.class);
+    public static B3authSessionService getB3authTokenService(HttpSecurity httpSecurity) {
+        B3authSessionService tokenService = httpSecurity.getSharedObject(B3authSessionService.class);
 
         if (tokenService == null) {
 
-            ResolvableType type = ResolvableType.forClass(B3authTokenService.class);
+            ResolvableType type = ResolvableType.forClass(B3authSessionService.class);
 
             tokenService = getOptionalBean(httpSecurity, type);
 
             if (tokenService != null) {
-                httpSecurity.setSharedObject(B3authTokenService.class, tokenService);
+                httpSecurity.setSharedObject(B3authSessionService.class, tokenService);
             }
         }
 

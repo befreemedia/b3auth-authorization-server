@@ -13,23 +13,17 @@ import java.util.UUID;
 
 public class B3authAuthenticationToken extends AbstractAuthenticationToken {
     private final Authentication principal;
-    private UUID tokenId;
-
-    public B3authAuthenticationToken(Authentication principal, UUID tokenId, Collection<? extends GrantedAuthority> authorities) {
+    public B3authAuthenticationToken(Authentication principal, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        Assert.notNull(tokenId, "token id can't be null");
         Assert.notNull(principal, "principal can't be null");
         this.principal = principal;
-        this.tokenId = tokenId;
         super.setAuthenticated(true);
     }
 
-    public B3authAuthenticationToken(Authentication principal, UUID tokenId) {
+    public B3authAuthenticationToken(Authentication principal) {
         super(null);
-        Assert.notNull(tokenId, "token id can't be null");
         Assert.notNull(principal, "principal can't be null");
         this.principal = principal;
-        this.tokenId = tokenId;
     }
 
     @Override
@@ -47,10 +41,6 @@ public class B3authAuthenticationToken extends AbstractAuthenticationToken {
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         Assert.isTrue(!isAuthenticated, "Set only by constructor");
         super.setAuthenticated(false);
-    }
-
-    public UUID getTokenId() {
-        return tokenId;
     }
 
     public UUID getPrincipalId() {

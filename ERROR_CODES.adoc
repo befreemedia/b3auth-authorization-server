@@ -15,4 +15,9 @@ Every section contains errors from different endpoint.
 == Endpoints
 
 Authentication `/b3auth/authenticate`::
+* `*B4002*` token after date todo
+* `*B4004* Bad request` in this request means email or email code not sent
+
+
+Authentication `/b3auth/authenticate`::
 * `*B5001* Authentication class type` - wrong authentication provider was chosen. `authenticate` method in `AuthenticationProvider` class bean *is required to return `B3authAuthenticationToken`* and not for example `UsernameAndPasswordAuthententicationToken`

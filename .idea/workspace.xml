@@ -5,39 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ERROR_CODES.adoc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthorizationServerExceptionCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authJwtException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authTokenService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authAuthorizationServerConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authConfigurationLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authEndpointsList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/AuthorizationServerContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/AuthorizationServerContextHolder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authAuthorizationServerConfigurer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authAuthorizationServerContextFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/AbstractB3authToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authAuthorizationToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authJwtClaims.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authTokenType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/ClaimAccessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/Jwt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtClaimsAccessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/settings/AbstractSettings.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/settings/B3authAuthorizationServerSettings.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/settings/B3authSettingsSpace.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthenticationEndpointFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/NimbusJwkEndpointFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authExceptionFrame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/b3authUserAuthenticationManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/GreetingMojo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ERROR_CODES.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/ERROR_CODES.adoc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthorizationServerExceptionCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthorizationServerExceptionCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authSessionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authConfigurationLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authConfigurationLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authEndpointsList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authEndpointsList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authJwtClaims.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authJwtClaims.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthenticationEndpointFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthenticationEndpointFilter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,15 +32,18 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="package-info" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2RmaPNryEe1lBoLN6tKxz5DVr1a" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -70,6 +58,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/michal/Development/fetcher/b3-authorization-server&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -104,6 +93,15 @@
       <workItem from="1688640964734" duration="5714000" />
       <workItem from="1688649838237" duration="140000" />
       <workItem from="1692008124177" duration="38000" />
+      <workItem from="1692009542426" duration="1193000" />
+      <workItem from="1692011580400" duration="1294000" />
+      <workItem from="1692194098971" duration="55000" />
+      <workItem from="1692562939110" duration="1000" />
+      <workItem from="1692562969527" duration="4240000" />
+      <workItem from="1692607983464" duration="4818000" />
+      <workItem from="1692697609740" duration="2308000" />
+      <workItem from="1692867809378" duration="1000" />
+      <workItem from="1692867820908" duration="5870000" />
     </task>
     <servers />
   </component>

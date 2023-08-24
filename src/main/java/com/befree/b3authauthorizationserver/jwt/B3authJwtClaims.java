@@ -48,4 +48,9 @@ public final class B3authJwtClaims {
      * user authorities list
      */
     public static final String AUTHORITIES = "atr";
+
+    /**
+     * user authorities list
+     */
+    public static final String TOKEN_TYPE = "tkp";
 }

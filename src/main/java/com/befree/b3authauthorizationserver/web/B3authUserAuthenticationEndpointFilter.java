@@ -2,14 +2,11 @@ package com.befree.b3authauthorizationserver.web;
 
 import com.befree.b3authauthorizationserver.B3authAuthenticationException;
 import com.befree.b3authauthorizationserver.B3authAuthenticationToken;
-import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode.*;
-import com.befree.b3authauthorizationserver.B3authTokenService;
+import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
+import com.befree.b3authauthorizationserver.B3authSessionService;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.jwt.*;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.shaded.gson.JsonObject;
-import com.nimbusds.jose.util.ByteUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +19,6 @@ import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -32,7 +28,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,14 +40,16 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
     private final JwtGenerator jwtGenerator;
 
-    private final B3authTokenService tokenService;
+    private final B3authSessionService tokenService;
     private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 600L;
     private final Long REFRESH_TOKEN_SECONDS_VALID = 5184000L;
+    private final String ISSUER = "https://domain.com";
+
+
     public B3authUserAuthenticationEndpointFilter(AuthenticationManager authenticationManager,
                                                   AuthenticationConverter authenticationConverter,
-                                                  B3authTokenService tokenService,
+                                                  B3authSessionService tokenService,
                                                   JwtGenerator jwtGenerator) {
-
         Assert.notNull(authenticationManager, "authentication manager can't be null");
         Assert.notNull(authenticationConverter, "authentication converter can't be null");
         Assert.notNull(jwtGenerator, "jwt generator must not be null");
@@ -82,6 +79,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
             }
 
             Authentication authenticationResult = this.authenticationManager.authenticate(authentication);
+
             if (!authenticationResult.isAuthenticated()) {
                 filterChain.doFilter(request, response);
                 return;
@@ -91,10 +89,8 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
                 filterChain.doFilter(request, response);
                 this.setAuthenticationSuccess(request, response, authenticationResult);
             } else {
-                throw new B3authAuthenticationException("Server authentication error.", B3authAuthenticationEndpointExceptionCode.B5001, "Wrong server configuration");
+                throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration", B3authAuthorizationServerExceptionCode.B5001);
             }
-
-            filterChain.doFilter(request, response);
         } catch(AuthenticationException e) {
             this.setAuthenticationError(request, response, e);
         }
@@ -109,15 +105,17 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
 
                 Map<String, Object> claims = new HashMap<>();
 
-                URL issuer = new URL("localhost");
+                URL issuer = new URL(ISSUER);
 
                 Jwt authorizationToken = jwtGenerator.generate(B3authTokenType.AUTHORIZATION_TOKEN, AUTHORIZATION_TOKEN_SECONDS_VALID, now, claims, authenticationToken.getPrincipalId(), new ArrayList<>(), authenticationToken.getAuthorities(), issuer);
 
                 tokenService.save(authorizationToken);
 
-                json.addProperty("authorization_token", authorizationToken.getValue());
+                json.addProperty("access_token", authorizationToken.getValue());
 
-                json.addProperty("token_type", "Bearer");
+                json.addProperty("refresh_token", "Bearer");
+
+                json.addProperty("initialized", "Bearer");
 
                 var stringValue = json.toString();
 
@@ -125,7 +123,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
                 response.setContentLength(stringValue.getBytes().length);
                 response.getWriter().write(stringValue);
             } else {
-                throw new B3authAuthenticationException("Server authentication error.", B3authAuthenticationEndpointExceptionCode.B5001, "Wrong server configuration");
+                throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration", B3authAuthorizationServerExceptionCode.B5001);
             }
         } catch (AuthenticationException e) {
             this.setAuthenticationError(request, response, e);
@@ -136,7 +134,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
         if(authenticationException instanceof B3authAuthenticationException exception) {
             var json = new JsonObject();
 
-            json.addProperty("error_code", exception.getErrorCode());
+            json.addProperty("error_code", exception.getErrorCode().toString());
             json.addProperty("error_description", exception.getDescription());
 
             var stringValue = json.toString();
