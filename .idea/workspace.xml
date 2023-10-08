@@ -5,24 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authExceptionFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authPermission.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authUserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/b3authUserAuthenticationManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ERROR_CODES.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/ERROR_CODES.adoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthorizationServerExceptionCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthorizationServerExceptionCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authSessionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authConfigurationLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authConfigurationLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/b3authUserAuthenticationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/b3authUserAuthenticationProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authEndpointsList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authEndpointsList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authJwtClaims.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/B3authJwtClaims.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthenticationEndpointFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthenticationEndpointFilter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +86,10 @@
       <workItem from="1692607983464" duration="4818000" />
       <workItem from="1692697609740" duration="2308000" />
       <workItem from="1692867809378" duration="1000" />
-      <workItem from="1692867820908" duration="5870000" />
+      <workItem from="1692867820908" duration="12521000" />
+      <workItem from="1693229632581" duration="10000" />
+      <workItem from="1694193751255" duration="2351000" />
+      <workItem from="1696776113768" duration="387000" />
     </task>
     <servers />
   </component>
