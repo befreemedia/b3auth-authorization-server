@@ -7,10 +7,10 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface B3authRole extends GrantedAuthority {
-    UUID getId();
+    Long getId();
     String getName();
     String getValue();
-    UUID getOwnerId();
+    Long getOwnerId();
     LocalDateTime getCreated();
     Collection<? extends B3authPermission> getPermissions();
 

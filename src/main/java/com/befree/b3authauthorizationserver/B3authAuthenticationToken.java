@@ -1,29 +1,30 @@
 package com.befree.b3authauthorizationserver;
 
-import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
 
-import javax.security.auth.Subject;
 import java.util.Collection;
-import java.util.UUID;
 
 public class B3authAuthenticationToken extends AbstractAuthenticationToken {
-    private final Authentication principal;
-    public B3authAuthenticationToken(Authentication principal, Collection<? extends GrantedAuthority> authorities) {
+    private final String email;
+    private final String code;
+    public B3authAuthenticationToken(String email, String code, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        Assert.notNull(principal, "principal can't be null");
-        this.principal = principal;
+        Assert.hasText(email, "principal can't be null");
+        Assert.hasText(code, "code have to contain numbers");
+        this.email = email;
+        this.code = code;
         super.setAuthenticated(true);
     }
 
-    public B3authAuthenticationToken(Authentication principal) {
+    public B3authAuthenticationToken(String email, String code) {
         super(null);
-        Assert.notNull(principal, "principal can't be null");
-        this.principal = principal;
+        Assert.hasText(email, "principal can't be null");
+        Assert.hasText(code, "code have to contain numbers");
+        this.email = email;
+        this.code = code;
     }
 
     @Override
@@ -33,17 +34,21 @@ public class B3authAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     @Override
-    public Authentication getPrincipal() {
-        return this.principal;
+    public String getPrincipal() {
+        return this.email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         Assert.isTrue(!isAuthenticated, "Set only by constructor");
         super.setAuthenticated(false);
-    }
-
-    public UUID getPrincipalId() {
-        return  UUID.fromString(this.getName());
     }
 }

@@ -1,3 +1,5 @@
 b3auth:
   authorization-server:
     issuer: https://domain.com
+
+# file name to change

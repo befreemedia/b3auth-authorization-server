@@ -17,6 +17,7 @@ Every section contains errors from different endpoint.
 Authentication `/b3auth/authenticate`::
 * `*B4002*` token after date todo
 * `*B4004* Bad request` in this request means email or email code not sent
+* `*B4005* User does not exists` user which sent authentication request can't be found.
 
 
 Authentication `/b3auth/authenticate`::

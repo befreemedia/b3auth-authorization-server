@@ -48,7 +48,7 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
 
         this.endpointsMatcher = new OrRequestMatcher(requestMatchers);
 
-        ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling = (ExceptionHandlingConfigurer)httpSecurity.getConfigurer(ExceptionHandlingConfigurer.class);
+        ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling = (ExceptionHandlingConfigurer) httpSecurity.getConfigurer(ExceptionHandlingConfigurer.class);
         if (exceptionHandling != null) {
             exceptionHandling.defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new OrRequestMatcher(getRequestMatchers(B3authEndpointsList.CLIENT_AUTHENTICATION, B3authEndpointsList.USER_AUTHENTICATION, B3authEndpointsList.CLIENT_TOKEN_REVOCATION, B3authEndpointsList.USER_TOKEN_REVOCATION)));
         }

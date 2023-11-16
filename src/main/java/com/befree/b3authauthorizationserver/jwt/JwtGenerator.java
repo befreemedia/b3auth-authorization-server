@@ -28,11 +28,10 @@ public class JwtGenerator {
         this.jwkSource = jwkSource;
     }
 
-    public Jwt generate(String type, Long secondsValid, LocalDateTime notBefore, Map<String, Object> claims,
-                               UUID userId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
+    public Jwt generate(UUID uuid, String type, Long secondsValid, LocalDateTime notBefore, Map<String, Object> claims,
+                        Long userId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
                                URL issuer) {
 
-        UUID uuid = UUID.randomUUID();
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expiresAt = notBefore.plusSeconds(secondsValid);
 
@@ -55,11 +54,10 @@ public class JwtGenerator {
             JWK jwk = jwks.get(0);
 
             String value = serialize(claims, jwk);
-            if(Objects.equals(type, B3authTokenType.AUTHORIZATION_TOKEN)) {
-                return new B3authAuthorizationToken(uuid, value, expiresAt, issuedAt, claims);
+            if(Objects.equals(type, B3authTokenType.REFRESH_TOKEN)) {
+                return new RefreshToken(uuid, value, expiresAt, issuedAt, claims);
             } else {
-                // todo refresh token
-                return null;
+                return new AuthorizationToken(uuid, value, expiresAt, issuedAt, claims);
             }
         } catch (Exception e) {
             System.out.println("i will do some handling, i promise");

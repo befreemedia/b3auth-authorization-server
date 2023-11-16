@@ -11,14 +11,17 @@ public interface B3authUserService {
 
     void remove(B3authToken token);
 
-    void removeById(UUID id);
+    void removeById(Long id);
 
     @Nullable
-    B3authToken findById(UUID id);
+    B3authToken findById(Long id);
 
     @Nullable
-    B3authToken findByToken(String token, B3authTokenType tokenType);
+    B3authUser findByEmail(String email);
 
     @Nullable
-    B3authToken findByToken(String token);
+    B3authUser findByToken(String token, B3authTokenType tokenType);
+
+    @Nullable
+    B3authUser findByToken(String token);
 }

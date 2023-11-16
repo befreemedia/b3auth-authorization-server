@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface B3authPermission {
-    UUID getId();
+    Long getId();
     String getName();
     String getValue();
     LocalDateTime getCreated();
