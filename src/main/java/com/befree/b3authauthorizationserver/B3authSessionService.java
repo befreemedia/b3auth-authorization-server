@@ -15,10 +15,4 @@ public interface B3authSessionService {
 
         @Nullable
         B3authToken findById(UUID id);
-
-        @Nullable
-        B3authToken findByToken(String token, B3authTokenType tokenType);
-
-        @Nullable
-        B3authToken findByToken(String token);
 }

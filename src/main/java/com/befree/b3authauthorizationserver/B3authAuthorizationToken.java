@@ -33,6 +33,16 @@ public class B3authAuthorizationToken extends AbstractAuthenticationToken {
         super.setAuthenticated(false);
     }
 
+    public B3authAuthorizationToken(Long userId, boolean userInitialized) {
+        super(null);
+
+        this.userId = userId;
+        this.userInitialized = userInitialized;
+        this.sessionId = null;
+
+        super.setAuthenticated(false);
+    }
+
     @Override
     @Nullable
     public Object getCredentials() {
@@ -44,6 +54,7 @@ public class B3authAuthorizationToken extends AbstractAuthenticationToken {
         return this.userId;
     }
 
+    @Nullable
     public UUID getSessionId() {
         return sessionId;
     }

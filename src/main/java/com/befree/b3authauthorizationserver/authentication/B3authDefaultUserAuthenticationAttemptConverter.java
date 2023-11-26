@@ -1,18 +1,22 @@
 package com.befree.b3authauthorizationserver.authentication;
 
+import com.befree.b3authauthorizationserver.B3authAuthenticationAttemptToken;
 import com.befree.b3authauthorizationserver.B3authAuthenticationException;
-import com.befree.b3authauthorizationserver.B3authAuthenticationToken;
 import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 
-public class B3authDefaultUserAuthenticationConverter implements AuthenticationConverter {
+public class B3authDefaultUserAuthenticationAttemptConverter implements AuthenticationConverter {
     @Override
     public Authentication convert(HttpServletRequest request) {
 
         String email = request.getParameter("email");
         String code = request.getParameter("code");
+
+        if(code != null) {
+            return null;
+        }
 
         if(email == null) {
             throw new B3authAuthenticationException("Bad request",
@@ -20,12 +24,7 @@ public class B3authDefaultUserAuthenticationConverter implements AuthenticationC
                     B3authAuthorizationServerExceptionCode.B4004);
         }
 
-        if(code == null) {
-            throw new B3authAuthenticationException("Bad request",
-                    "Code param is required in body. To get code to email send request to /b3auth/attempt/",
-                    B3authAuthorizationServerExceptionCode.B4004);
-        }
-
-        return new B3authAuthenticationToken(email, code);
+        return new B3authAuthenticationAttemptToken(email);
     }
+
 }

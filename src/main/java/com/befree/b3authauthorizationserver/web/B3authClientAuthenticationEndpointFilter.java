@@ -1,12 +1,10 @@
 package com.befree.b3authauthorizationserver.web;
 
-import com.befree.b3authauthorizationserver.B3authAuthenticationException;
-import com.befree.b3authauthorizationserver.B3authAuthenticationToken;
-import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
-import com.befree.b3authauthorizationserver.B3authAuthorizationToken;
-import com.befree.b3authauthorizationserver.B3authSessionService;
+import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
-import com.befree.b3authauthorizationserver.jwt.*;
+import com.befree.b3authauthorizationserver.jwt.B3authTokenType;
+import com.befree.b3authauthorizationserver.jwt.Jwt;
+import com.befree.b3authauthorizationserver.jwt.JwtGenerator;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -34,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter {
+public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilter {
     private final RequestMatcher requestMatcher;
     private final AuthenticationManager authenticationManager;
     private final AuthenticationConverter authenticationConverter;
@@ -48,7 +47,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
     private final String ISSUER = "https://domain.com";
 
 
-    public B3authUserAuthenticationEndpointFilter(AuthenticationManager authenticationManager,
+    public B3authClientAuthenticationEndpointFilter(AuthenticationManager authenticationManager,
                                                   AuthenticationConverter authenticationConverter,
                                                   B3authSessionService sessionService,
                                                   JwtGenerator jwtGenerator) {
@@ -88,7 +87,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
                 return;
             }
 
-            if (authenticationResult instanceof B3authAuthorizationToken) {
+            if (authenticationResult instanceof B3authClientAuthorizationToken) {
                 filterChain.doFilter(request, response);
                 this.setAuthenticationSuccess(request, response, authenticationResult);
             } else {
@@ -99,39 +98,36 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
             this.setAuthenticationError(request, response, e);
         }
     }
-    
+
     private void setAuthenticationSuccess(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                           @NonNull Authentication authentication) throws IOException {
         try {
-            if (authentication instanceof B3authAuthorizationToken b3authAuthorizationToken) {
+            if (authentication instanceof B3authClientAuthorizationToken b3authClientAuthorizationToken) {
                 var json = new JsonObject();
 
                 LocalDateTime now = LocalDateTime.now();
 
                 Map<String, Object> claims = new HashMap<>();
-                claims.put("initialized", b3authAuthorizationToken.isUserInitialized());
 
                 URL issuer = new URL(ISSUER);
 
-                Jwt authorizationToken = jwtGenerator.generate(b3authAuthorizationToken.getSessionId(),
-                        B3authTokenType.AUTHORIZATION_TOKEN, AUTHORIZATION_TOKEN_SECONDS_VALID, now, claims,
-                        b3authAuthorizationToken.getUserId(), new ArrayList<>(),
-                        b3authAuthorizationToken.getAuthorities(), issuer);
+                Jwt authorizationToken = jwtGenerator.generate(b3authClientAuthorizationToken.getSessionId(),
+                        B3authTokenType.CLIENT_AUTHORIZATION_TOKEN, AUTHORIZATION_TOKEN_SECONDS_VALID, now, claims,
+                        b3authClientAuthorizationToken.getClientId(), new ArrayList<>(),
+                        b3authClientAuthorizationToken.getAuthorities(), issuer);
 
                 sessionService.save(authorizationToken);
 
-                Jwt refreshToken = jwtGenerator.generate(b3authAuthorizationToken.getSessionId(),
-                        B3authTokenType.REFRESH_TOKEN, REFRESH_TOKEN_SECONDS_VALID, now, claims,
-                        b3authAuthorizationToken.getUserId(), new ArrayList<>(),
-                        b3authAuthorizationToken.getAuthorities(), issuer);
+                Jwt refreshToken = jwtGenerator.generate(b3authClientAuthorizationToken.getSessionId(),
+                        B3authTokenType.CLIENT_REFRESH_TOKEN, REFRESH_TOKEN_SECONDS_VALID, now, claims,
+                        b3authClientAuthorizationToken.getClientId(), new ArrayList<>(),
+                        b3authClientAuthorizationToken.getAuthorities(), issuer);
 
                 sessionService.save(refreshToken);
 
                 json.addProperty("access_token", "Bearer " + authorizationToken.getValue());
 
                 json.addProperty("refresh_token", "Bearer " + refreshToken.getValue());
-
-                json.addProperty("initialized",  b3authAuthorizationToken.isUserInitialized());
 
                 var stringValue = json.toString();
 

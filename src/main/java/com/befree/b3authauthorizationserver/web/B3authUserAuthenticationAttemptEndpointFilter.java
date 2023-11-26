@@ -1,12 +1,13 @@
 package com.befree.b3authauthorizationserver.web;
 
 import com.befree.b3authauthorizationserver.B3authAuthenticationException;
-import com.befree.b3authauthorizationserver.B3authAuthenticationToken;
 import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
 import com.befree.b3authauthorizationserver.B3authAuthorizationToken;
 import com.befree.b3authauthorizationserver.B3authSessionService;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
-import com.befree.b3authauthorizationserver.jwt.*;
+import com.befree.b3authauthorizationserver.jwt.B3authTokenType;
+import com.befree.b3authauthorizationserver.jwt.Jwt;
+import com.befree.b3authauthorizationserver.jwt.JwtGenerator;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter {
+public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerRequestFilter {
     private final RequestMatcher requestMatcher;
     private final AuthenticationManager authenticationManager;
     private final AuthenticationConverter authenticationConverter;
@@ -48,7 +49,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
     private final String ISSUER = "https://domain.com";
 
 
-    public B3authUserAuthenticationEndpointFilter(AuthenticationManager authenticationManager,
+    public B3authUserAuthenticationAttemptEndpointFilter(AuthenticationManager authenticationManager,
                                                   AuthenticationConverter authenticationConverter,
                                                   B3authSessionService sessionService,
                                                   JwtGenerator jwtGenerator) {
@@ -99,7 +100,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
             this.setAuthenticationError(request, response, e);
         }
     }
-    
+
     private void setAuthenticationSuccess(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                           @NonNull Authentication authentication) throws IOException {
         try {

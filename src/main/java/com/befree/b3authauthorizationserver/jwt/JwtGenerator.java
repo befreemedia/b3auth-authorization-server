@@ -29,13 +29,14 @@ public class JwtGenerator {
     }
 
     public Jwt generate(UUID uuid, String type, Long secondsValid, LocalDateTime notBefore, Map<String, Object> claims,
-                        Long userId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
+                        Long subjectId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
                                URL issuer) {
 
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expiresAt = notBefore.plusSeconds(secondsValid);
 
-        claims.put(B3authJwtClaims.SUBJECT, userId);
+        claims.put(B3authJwtClaims.SUBJECT, subjectId);
+        claims.put(B3authJwtClaims.TOKEN_TYPE, type);
         claims.put(B3authJwtClaims.JWT_ID, uuid);
         claims.put(B3authJwtClaims.AUDIENCE, audience);
         claims.put(B3authJwtClaims.AUTHORITIES, authorities);

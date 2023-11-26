@@ -42,7 +42,7 @@ public class B3authUserAuthenticationProvider implements AuthenticationProvider 
                     "Authentication code expired. Request a new one", B3authAuthorizationServerExceptionCode.B4007);
         }
 
-        if(authenticationAttempt.revoked() || authenticationAttempt.deleted() || authenticationAttempt.succeed()) {
+        if(authenticationAttempt.isRevoked() || authenticationAttempt.isDeleted() || authenticationAttempt.isSucceed()) {
             throw new B3authAuthenticationException("B3authAuthenticationAttemptService should not return used authentication attempts.",
                     "Authentication attempt already used.", B3authAuthorizationServerExceptionCode.B4008);
         }
@@ -52,11 +52,12 @@ public class B3authUserAuthenticationProvider implements AuthenticationProvider 
                     "Wrong email code.", B3authAuthorizationServerExceptionCode.B4009);
         }
 
-        return null;
+
+        return new B3authAuthorizationToken(null, user.getId(), user.initialised(), user.getAuthorities());
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return false;
+        return B3authAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
