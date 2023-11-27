@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserAuthenticationAttemptProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserAuthenticationAttemptProvider.java" afterDir="false" />
-    </list>
+    <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,8 +14,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -116,7 +113,7 @@
       <workItem from="1701083150937" duration="2368000" />
       <workItem from="1701093980759" duration="2297000" />
       <workItem from="1701102740428" duration="5000" />
-      <workItem from="1701105516021" duration="4486000" />
+      <workItem from="1701105516021" duration="5667000" />
     </task>
     <servers />
   </component>
