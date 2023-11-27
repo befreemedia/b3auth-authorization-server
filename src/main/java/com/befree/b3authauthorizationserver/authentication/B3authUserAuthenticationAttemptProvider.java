@@ -32,7 +32,7 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
         B3authUser user = b3authUserService.findByEmail(b3authAuthenticationAttemptToken.getEmail());
 
         if(user == null) {
-            b3authUserService.createAndSaveEmail(b3authAuthenticationAttemptToken.getEmail());
+            b3authUserService.createAndSaveByEmail(b3authAuthenticationAttemptToken.getEmail());
             user = b3authUserService.findByEmail(b3authAuthenticationAttemptToken.getEmail());
         }
 
