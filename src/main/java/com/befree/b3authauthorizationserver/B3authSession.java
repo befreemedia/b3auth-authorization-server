@@ -10,8 +10,8 @@ public interface B3authSession {
     UUID getId();
     Long getUserId();
     String getType();
-    LocalDateTime issuedAt();
-    LocalDateTime expiresAt();
+    LocalDateTime getIssuedAt();
+    LocalDateTime getExpiresAt();
     Collection<? extends GrantedAuthority> getAuthorities();
     Boolean getDeleted();
     Boolean getRevoked();
