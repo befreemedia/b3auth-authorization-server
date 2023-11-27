@@ -6,12 +6,12 @@ import org.springframework.lang.Nullable;
 import java.util.UUID;
 
 public interface B3authSessionService {
-        void save(B3authToken token);
+        void save(B3authSession session);
 
-        void remove(B3authToken token);
+        void remove(B3authSession session);
 
         void removeById(UUID id);
 
         @Nullable
-        B3authToken findById(UUID id);
+        B3authSession findById(UUID id);
 }

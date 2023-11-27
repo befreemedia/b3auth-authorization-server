@@ -27,7 +27,7 @@ public class B3authClientAuthenticationProvider implements AuthenticationProvide
                     "Client does not exists.", B3authAuthorizationServerExceptionCode.B4005);
         }
 
-        if(client.banned() || client.deleted() || client.suspended() || client.locked()) {
+        if(client.getBanned() || client.getDeleted() || client.getSuspended() || client.getLocked()) {
             throw new B3authAuthenticationException("Client can't sign in.",
                     "Client account must be active to sign in.", B3authAuthorizationServerExceptionCode.B4008);
         }

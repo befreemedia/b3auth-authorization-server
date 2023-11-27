@@ -19,7 +19,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -39,6 +38,7 @@ public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilt
     private final AuthenticationConverter authenticationConverter;
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
     private final JwtGenerator jwtGenerator;
+    private final B3authSessionGenerator b3authSessionGenerator;
 
     private final B3authSessionService sessionService;
     private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 600L;
@@ -48,9 +48,10 @@ public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilt
 
 
     public B3authClientAuthenticationEndpointFilter(AuthenticationManager authenticationManager,
-                                                  AuthenticationConverter authenticationConverter,
-                                                  B3authSessionService sessionService,
-                                                  JwtGenerator jwtGenerator) {
+                                                    AuthenticationConverter authenticationConverter,
+                                                    B3authSessionService sessionService,
+                                                    JwtGenerator jwtGenerator, B3authSessionGenerator b3authSessionGenerator) {
+        this.b3authSessionGenerator = b3authSessionGenerator;
         Assert.notNull(authenticationManager, "authentication manager can't be null");
         Assert.notNull(authenticationConverter, "authentication converter can't be null");
         Assert.notNull(jwtGenerator, "jwt generator must not be null");
@@ -116,14 +117,14 @@ public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilt
                         b3authClientAuthorizationToken.getClientId(), new ArrayList<>(),
                         b3authClientAuthorizationToken.getAuthorities(), issuer);
 
-                sessionService.save(authorizationToken);
-
                 Jwt refreshToken = jwtGenerator.generate(b3authClientAuthorizationToken.getSessionId(),
                         B3authTokenType.CLIENT_REFRESH_TOKEN, REFRESH_TOKEN_SECONDS_VALID, now, claims,
                         b3authClientAuthorizationToken.getClientId(), new ArrayList<>(),
                         b3authClientAuthorizationToken.getAuthorities(), issuer);
 
-                sessionService.save(refreshToken);
+                B3authSession session = b3authSessionGenerator.generate(authorizationToken, refreshToken, b3authClientAuthorizationToken);
+
+                sessionService.save(session);
 
                 json.addProperty("access_token", "Bearer " + authorizationToken.getValue());
 

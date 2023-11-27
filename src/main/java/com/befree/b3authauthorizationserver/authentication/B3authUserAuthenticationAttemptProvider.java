@@ -36,6 +36,7 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
             user = b3authUserService.findByEmail(b3authAuthenticationAttemptToken.getEmail());
         }
 
+
         if(user == null) {
             throw new B3authAuthenticationException("User cannot be found in database.",
                     "User does not exists and can't be created.", B3authAuthorizationServerExceptionCode.B4005);

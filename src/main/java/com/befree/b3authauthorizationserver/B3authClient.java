@@ -11,9 +11,9 @@ public interface B3authClient {
     String getName();
     String getPassword();
     String getLogin();
-    boolean initialised();
-    boolean suspended();
-    boolean banned();
-    boolean locked();
-    boolean deleted();
+    boolean getInitialised();
+    boolean getSuspended();
+    boolean getBanned();
+    boolean getLocked();
+    boolean getDeleted();
 }
