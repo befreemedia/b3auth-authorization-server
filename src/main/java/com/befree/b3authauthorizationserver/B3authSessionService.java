@@ -1,7 +1,6 @@
 package com.befree.b3authauthorizationserver;
 
 import com.befree.b3authauthorizationserver.jwt.B3authToken;
-import com.befree.b3authauthorizationserver.jwt.B3authTokenType;
 import org.springframework.lang.Nullable;
 
 import java.util.UUID;

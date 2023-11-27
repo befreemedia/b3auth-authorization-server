@@ -5,11 +5,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public interface B3authClient extends UserDetails {
+public interface B3authClient {
     Long getId();
     LocalDateTime getCreated();
     String getName();
-    Collection<? extends B3authRole> getRoles();
+    String getPassword();
+    String getLogin();
     boolean initialised();
     boolean suspended();
     boolean banned();

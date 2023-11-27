@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
+
 public class B3authClientAuthenticationProvider implements AuthenticationProvider {
     private final B3authClientService b3authClientService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -36,7 +38,7 @@ public class B3authClientAuthenticationProvider implements AuthenticationProvide
                     B3authAuthorizationServerExceptionCode.B4009);
         }
 
-        return new B3authClientAuthorizationToken(null, client.getId(), client.getAuthorities());
+        return new B3authClientAuthorizationToken(null, client.getId(), new ArrayList<>());
     }
 
     @Override

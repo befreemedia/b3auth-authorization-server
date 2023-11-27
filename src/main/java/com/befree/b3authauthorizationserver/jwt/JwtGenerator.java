@@ -1,5 +1,6 @@
 package com.befree.b3authauthorizationserver.jwt;
 
+import com.befree.b3authauthorizationserver.B3authUser;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.factories.DefaultJWSSignerFactory;
 import com.nimbusds.jose.jwk.JWK;
@@ -30,7 +31,7 @@ public class JwtGenerator {
 
     public Jwt generate(UUID uuid, String type, Long secondsValid, LocalDateTime notBefore, Map<String, Object> claims,
                         Long subjectId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
-                               URL issuer) {
+                        URL issuer) {
 
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expiresAt = notBefore.plusSeconds(secondsValid);
@@ -55,10 +56,17 @@ public class JwtGenerator {
             JWK jwk = jwks.get(0);
 
             String value = serialize(claims, jwk);
-            if(Objects.equals(type, B3authTokenType.REFRESH_TOKEN)) {
-                return new RefreshToken(uuid, value, expiresAt, issuedAt, claims);
-            } else {
-                return new AuthorizationToken(uuid, value, expiresAt, issuedAt, claims);
+
+            switch (type) {
+                case B3authTokenType.REFRESH_TOKEN:
+                    return new RefreshToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+                case B3authTokenType.AUTHORIZATION_TOKEN:
+                    return new AuthorizationToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+                case B3authTokenType.CLIENT_AUTHORIZATION_TOKEN:
+                    return new ClientAuthorizationToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+                case B3authTokenType.CLIENT_REFRESH_TOKEN:
+                    return new ClientRefreshToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+
             }
         } catch (Exception e) {
             System.out.println("i will do some handling, i promise");

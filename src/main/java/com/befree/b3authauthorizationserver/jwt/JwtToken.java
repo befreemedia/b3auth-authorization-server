@@ -9,5 +9,4 @@ public interface JwtToken {
     LocalDateTime issuedAt();
     LocalDateTime expiresAt();
     Map<String, Object> getClaims();
-    //Map<String, Object> getHeaders();
 }

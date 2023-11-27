@@ -7,8 +7,8 @@ import java.util.UUID;
 public class ClientAuthorizationToken extends Jwt {
 
     public ClientAuthorizationToken(UUID uuid, String value, LocalDateTime expiresAt, LocalDateTime issuedAt,
-                              Map<String, Object> claims) {
-        super(uuid, value, expiresAt, issuedAt, claims);
+                              Map<String, Object> claims, Long subjectId) {
+        super(uuid, value, expiresAt, issuedAt, claims, subjectId);
     }
 
     @Override
