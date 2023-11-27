@@ -2,18 +2,28 @@ package com.befree.b3authauthorizationserver.authentication;
 
 import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.config.configuration.CodeGenerator;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.time.LocalDateTime;
 
 public class B3authUserAuthenticationAttemptProvider implements AuthenticationProvider {
     private final B3authUserService b3authUserService;
     private final B3authAuthenticationAttemptService b3authAuthenticationAttemptService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JavaMailSender javaMailSender;
 
     public B3authUserAuthenticationAttemptProvider(B3authUserService b3authUserService,
-                                                   B3authAuthenticationAttemptService b3authAuthenticationAttemptService) {
+                                                   B3authAuthenticationAttemptService b3authAuthenticationAttemptService,
+                                                   BCryptPasswordEncoder bCryptPasswordEncoder, JavaMailSender javaMailSender) {
         this.b3authUserService = b3authUserService;
         this.b3authAuthenticationAttemptService = b3authAuthenticationAttemptService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.javaMailSender = javaMailSender;
     }
 
     @Override
@@ -41,18 +51,23 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
 
         String code = CodeGenerator.generate(6);
 
-        b3authAuthenticationAttemptService.save();
+        String codeToSave = bCryptPasswordEncoder.encode(code);
+
+        B3authAuthenticationAttempt authenticationAttempt = new B3authDefaultAuthenticationAttempt(null,
+                user.getId(), codeToSave, LocalDateTime.now(), false, false, false);
+
+        b3authAuthenticationAttemptService.save(authenticationAttempt);
 
         SimpleMailMessage message = new SimpleMailMessage();
+
         message.setFrom("auth");
-        message.setTo(request.getEmail());
+        message.setTo(user.getEmail());
         message.setSubject("Your verification code");
         message.setText(code);
+
         javaMailSender.send(message);
 
-
-
-        return new B3authAuthorizationToken(null, user.getId(), user.initialised(), user.getAuthorities());
+        return new B3authAuthenticationAttemptToken(user.getEmail(), code);
     }
 
     @Override

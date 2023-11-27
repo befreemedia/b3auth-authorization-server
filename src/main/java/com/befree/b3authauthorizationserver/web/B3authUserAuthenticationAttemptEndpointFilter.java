@@ -1,9 +1,6 @@
 package com.befree.b3authauthorizationserver.web;
 
-import com.befree.b3authauthorizationserver.B3authAuthenticationException;
-import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
-import com.befree.b3authauthorizationserver.B3authAuthorizationToken;
-import com.befree.b3authauthorizationserver.B3authSessionService;
+import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.jwt.B3authTokenType;
 import com.befree.b3authauthorizationserver.jwt.Jwt;
@@ -40,30 +37,20 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
     private final AuthenticationManager authenticationManager;
     private final AuthenticationConverter authenticationConverter;
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
-    private final JwtGenerator jwtGenerator;
-
-    private final B3authSessionService sessionService;
     private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 600L;
     // todo temporary unchangeable, will be done from properties
     private final Long REFRESH_TOKEN_SECONDS_VALID = 5184000L;
     private final String ISSUER = "https://domain.com";
 
-
     public B3authUserAuthenticationAttemptEndpointFilter(AuthenticationManager authenticationManager,
-                                                  AuthenticationConverter authenticationConverter,
-                                                  B3authSessionService sessionService,
-                                                  JwtGenerator jwtGenerator) {
+                                                  AuthenticationConverter authenticationConverter) {
         Assert.notNull(authenticationManager, "authentication manager can't be null");
         Assert.notNull(authenticationConverter, "authentication converter can't be null");
-        Assert.notNull(jwtGenerator, "jwt generator must not be null");
-        Assert.notNull(sessionService, "token service can't be null");
 
         this.authenticationManager = authenticationManager;
         this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION);
         this.authenticationConverter = authenticationConverter;
         this.authenticationDetailsSource = new WebAuthenticationDetailsSource();
-        this.jwtGenerator = jwtGenerator;
-        this.sessionService = sessionService;
     }
 
     @Override
@@ -104,35 +91,16 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
     private void setAuthenticationSuccess(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                           @NonNull Authentication authentication) throws IOException {
         try {
-            if (authentication instanceof B3authAuthorizationToken b3authAuthorizationToken) {
+            if (authentication instanceof B3authAuthenticationAttemptToken b3authAuthenticationAttemptToken) {
                 var json = new JsonObject();
 
                 LocalDateTime now = LocalDateTime.now();
 
                 Map<String, Object> claims = new HashMap<>();
-                claims.put("initialized", b3authAuthorizationToken.isUserInitialized());
 
                 URL issuer = new URL(ISSUER);
 
-                Jwt authorizationToken = jwtGenerator.generate(b3authAuthorizationToken.getSessionId(),
-                        B3authTokenType.AUTHORIZATION_TOKEN, AUTHORIZATION_TOKEN_SECONDS_VALID, now, claims,
-                        b3authAuthorizationToken.getUserId(), new ArrayList<>(),
-                        b3authAuthorizationToken.getAuthorities(), issuer);
-
-                sessionService.save(authorizationToken);
-
-                Jwt refreshToken = jwtGenerator.generate(b3authAuthorizationToken.getSessionId(),
-                        B3authTokenType.REFRESH_TOKEN, REFRESH_TOKEN_SECONDS_VALID, now, claims,
-                        b3authAuthorizationToken.getUserId(), new ArrayList<>(),
-                        b3authAuthorizationToken.getAuthorities(), issuer);
-
-                sessionService.save(refreshToken);
-
-                json.addProperty("access_token", "Bearer " + authorizationToken.getValue());
-
-                json.addProperty("refresh_token", "Bearer " + refreshToken.getValue());
-
-                json.addProperty("initialized",  b3authAuthorizationToken.isUserInitialized());
+                json.addProperty("code", b3authAuthenticationAttemptToken.getCode());
 
                 var stringValue = json.toString();
 
