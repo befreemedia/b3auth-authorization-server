@@ -53,7 +53,7 @@ public class B3authUserAuthenticationProvider implements AuthenticationProvider 
         }
 
 
-        return new B3authAuthorizationToken(null, user.getId(), user.initialised(), user.getAuthorities());
+        return new B3authAuthorizationToken(null, user.getId(), user.getInitialised(), user.getAuthorities());
     }
 
     @Override
