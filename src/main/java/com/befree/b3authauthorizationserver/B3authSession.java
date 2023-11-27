@@ -16,5 +16,4 @@ public interface B3authSession {
     Boolean getDeleted();
     Boolean getRevoked();
     Boolean getSuspended();
-
 }
