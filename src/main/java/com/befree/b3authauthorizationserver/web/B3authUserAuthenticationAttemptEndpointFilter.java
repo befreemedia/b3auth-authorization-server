@@ -35,7 +35,7 @@ import java.util.Map;
 public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerRequestFilter {
     private final RequestMatcher requestMatcher;
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationConverter authenticationConverter;
+    private AuthenticationConverter authenticationConverter;
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
     private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 600L;
     // todo temporary unchangeable, will be done from properties
@@ -133,5 +133,10 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
         } else {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), authenticationException.toString());
         }
+    }
+
+    public void setAuthenticationConverter(AuthenticationConverter authenticationConverter) {
+        Assert.notNull(authenticationConverter, "authenticationConverter cannot be null");
+        this.authenticationConverter = authenticationConverter;
     }
 }

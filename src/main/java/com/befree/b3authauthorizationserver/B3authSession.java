@@ -8,10 +8,12 @@ import java.util.UUID;
 
 public interface B3authSession {
     UUID getId();
+    UUID getRefreshTokenId();
     Long getUserId();
     String getType();
     LocalDateTime getIssuedAt();
     LocalDateTime getExpiresAt();
+    LocalDateTime getRefreshExpiresAt();
     Collection<? extends GrantedAuthority> getAuthorities();
     Boolean getDeleted();
     Boolean getRevoked();
