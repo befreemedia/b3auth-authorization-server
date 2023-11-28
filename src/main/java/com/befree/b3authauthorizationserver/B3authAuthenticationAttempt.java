@@ -11,6 +11,6 @@ public interface B3authAuthenticationAttempt {
     boolean isSucceed();
     boolean isRevoked();
     void setRevoked(boolean revoked);
-    void setSucceeded(boolean succeeded);
+    void setSucceed(boolean succeeded);
 
 }
