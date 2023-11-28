@@ -2,7 +2,7 @@ package com.befree.b3authauthorizationserver.config.configuration;
 
 public final class B3authEndpointsList {
     // na poniedzialek
-    public final static String USER_AUTHENTICATION_ATTEMPT = "/b3auth/attempt/";
+    public final static String USER_AUTHENTICATION_ATTEMPT = "/b3auth/attempt";
     // na poniedzialek
     public final static String USER_AUTHENTICATION = "b3auth/authenticate";
     public final static String USER_TOKEN_REFRESH = "b3auth/refresh";
