@@ -79,7 +79,7 @@ public class B3authUserAuthenticationAttemptConfigurer extends AbstractB3authCon
                         B3authConfigurationLoader.getUserService(httpSecurity),
                         B3authConfigurationLoader.getAuthenticationAttemptService(httpSecurity),
                         B3authConfigurationLoader.getPasswordEncoder(httpSecurity),
-                        B3authConfigurationLoader.getMailSender(httpSecurity)));
+                        B3authConfigurationLoader.getMailSender(httpSecurity));
 
         authenticationProviders.add(userAuthenticationProvider);
 
