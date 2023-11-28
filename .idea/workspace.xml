@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationAttempt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationAttempt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationAttemptService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationAttemptService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserAuthenticationAttemptProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserAuthenticationAttemptProvider.java" afterDir="false" />
-    </list>
+    <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -121,7 +116,7 @@
       <workItem from="1701105516021" duration="6950000" />
       <workItem from="1701166039963" duration="4299000" />
       <workItem from="1701176965260" duration="3033000" />
-      <workItem from="1701188555745" duration="11698000" />
+      <workItem from="1701188555745" duration="12033000" />
     </task>
     <servers />
   </component>

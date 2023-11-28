@@ -4,6 +4,7 @@ import com.befree.b3authauthorizationserver.*;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,11 +12,14 @@ import java.util.Objects;
 public class B3authUserAuthenticationProvider implements AuthenticationProvider {
     private final B3authUserService b3authUserService;
     private final B3authAuthenticationAttemptService b3authAuthenticationAttemptService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public B3authUserAuthenticationProvider(B3authUserService b3authUserService,
-                                            B3authAuthenticationAttemptService b3authAuthenticationAttemptService) {
+                                            B3authAuthenticationAttemptService b3authAuthenticationAttemptService,
+                                            BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.b3authUserService = b3authUserService;
         this.b3authAuthenticationAttemptService = b3authAuthenticationAttemptService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -47,7 +51,7 @@ public class B3authUserAuthenticationProvider implements AuthenticationProvider 
                     "Authentication attempt already used.", B3authAuthorizationServerExceptionCode.B4008);
         }
 
-        if(!Objects.equals(b3authAuthenticationToken.getCode(), authenticationAttempt.getCode())) {
+        if(!bCryptPasswordEncoder.matches(authenticationAttempt.getCode(), b3authAuthenticationToken.getCode())) {
             throw new B3authAuthenticationException("Code from email should be exactly the same as was sent.",
                     "Wrong email code.", B3authAuthorizationServerExceptionCode.B4009);
         }
