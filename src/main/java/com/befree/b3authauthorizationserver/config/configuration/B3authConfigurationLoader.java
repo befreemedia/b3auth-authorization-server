@@ -1,6 +1,10 @@
 package com.befree.b3authauthorizationserver.config.configuration;
 
+import com.befree.b3authauthorizationserver.B3authAuthenticationAttemptService;
+import com.befree.b3authauthorizationserver.B3authSessionGenerator;
 import com.befree.b3authauthorizationserver.B3authSessionService;
+import com.befree.b3authauthorizationserver.B3authUserService;
+import com.befree.b3authauthorizationserver.jwt.JwtGenerator;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -42,21 +46,93 @@ public final class B3authConfigurationLoader {
         return jwkSource;
     }
 
-    public static B3authSessionService getB3authTokenService(HttpSecurity httpSecurity) {
-        B3authSessionService tokenService = httpSecurity.getSharedObject(B3authSessionService.class);
+    public static B3authSessionService getSessionService(HttpSecurity httpSecurity) {
+        B3authSessionService sessionService = httpSecurity.getSharedObject(B3authSessionService.class);
 
-        if (tokenService == null) {
+        if (sessionService == null) {
 
             ResolvableType type = ResolvableType.forClass(B3authSessionService.class);
 
-            tokenService = getOptionalBean(httpSecurity, type);
+            sessionService = getOptionalBean(httpSecurity, type);
 
-            if (tokenService != null) {
-                httpSecurity.setSharedObject(B3authSessionService.class, tokenService);
+            if (sessionService != null) {
+                httpSecurity.setSharedObject(B3authSessionService.class, sessionService);
+            } else {
+                throw new RuntimeException("B3authSessionService bean must be specified.");
             }
         }
 
-        return tokenService;
+        return sessionService;
+    }
+
+    public static B3authUserService getUserService(HttpSecurity httpSecurity) {
+        B3authUserService userService = httpSecurity.getSharedObject(B3authUserService.class);
+        if (userService == null) {
+
+            ResolvableType type = ResolvableType.forClass(B3authUserService.class);
+
+            userService = getOptionalBean(httpSecurity, B3authUserService.class);
+
+            if (userService != null) {
+                httpSecurity.setSharedObject(B3authUserService.class, userService);
+            } else {
+                throw new RuntimeException("B3authUserService bean must be specified.");
+            }
+
+        }
+        return userService;
+    }
+
+    public static B3authAuthenticationAttemptService getAuthenticationAttemptService(HttpSecurity httpSecurity) {
+        B3authAuthenticationAttemptService authenticationAttemptService = httpSecurity.getSharedObject(B3authAuthenticationAttemptService.class);
+        if (authenticationAttemptService == null) {
+
+            ResolvableType type = ResolvableType.forClass(B3authAuthenticationAttemptService.class);
+
+            authenticationAttemptService = getOptionalBean(httpSecurity, B3authAuthenticationAttemptService.class);
+
+            if (authenticationAttemptService != null) {
+                httpSecurity.setSharedObject(B3authAuthenticationAttemptService.class, authenticationAttemptService);
+            } else {
+                throw new RuntimeException("B3authAuthenticationAttemptService bean must be specified.");
+            }
+
+        }
+        return authenticationAttemptService;
+    }
+
+    public static B3authSessionGenerator getSessionGenerator(HttpSecurity httpSecurity) {
+        B3authSessionGenerator sessionGenerator = httpSecurity.getSharedObject(B3authSessionGenerator.class);
+        if (sessionGenerator == null) {
+
+            ResolvableType type = ResolvableType.forClass(B3authSessionGenerator.class);
+
+            sessionGenerator = getOptionalBean(httpSecurity, B3authSessionGenerator.class);
+
+            if (sessionGenerator != null) {
+                httpSecurity.setSharedObject(B3authSessionGenerator.class, sessionGenerator);
+            } else {
+                throw new RuntimeException("B3authSessionGenerator bean must be specified.");
+            }
+
+        }
+        return sessionGenerator;
+    }
+
+    public static JwtGenerator getJwtGenerator(HttpSecurity httpSecurity) {
+        JwtGenerator jwtGenerator = httpSecurity.getSharedObject(JwtGenerator.class);
+
+        if (jwtGenerator == null) {
+
+            JWKSource<SecurityContext> jwkSource = getJwkSource(httpSecurity);
+
+            if (jwkSource != null) {
+                jwtGenerator = new JwtGenerator(jwkSource);
+                httpSecurity.setSharedObject(JwtGenerator.class, jwtGenerator);
+            }
+        }
+
+        return jwtGenerator;
     }
 
     public static <T> T getBean(HttpSecurity httpSecurity, Class<T> type) {

@@ -35,7 +35,7 @@ import java.util.Map;
 public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilter {
     private final RequestMatcher requestMatcher;
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationConverter authenticationConverter;
+    private AuthenticationConverter authenticationConverter;
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
     private final JwtGenerator jwtGenerator;
     private final B3authSessionGenerator b3authSessionGenerator;
@@ -161,5 +161,10 @@ public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilt
         } else {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), authenticationException.toString());
         }
+    }
+
+    public void setAuthenticationConverter(AuthenticationConverter authenticationConverter) {
+        Assert.notNull(authenticationConverter, "authenticationConverter cannot be null");
+        this.authenticationConverter = authenticationConverter;
     }
 }

@@ -33,7 +33,7 @@ import java.util.Map;
 public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter {
     private final RequestMatcher requestMatcher;
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationConverter authenticationConverter;
+    private AuthenticationConverter authenticationConverter;
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
     private final JwtGenerator jwtGenerator;
     private final B3authSessionGenerator b3authSessionGenerator;
@@ -48,7 +48,8 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
     public B3authUserAuthenticationEndpointFilter(AuthenticationManager authenticationManager,
                                                   AuthenticationConverter authenticationConverter,
                                                   B3authSessionService sessionService,
-                                                  JwtGenerator jwtGenerator, B3authSessionGenerator b3authSessionGenerator) {
+                                                  JwtGenerator jwtGenerator,
+                                                  B3authSessionGenerator b3authSessionGenerator) {
         this.b3authSessionGenerator = b3authSessionGenerator;
         Assert.notNull(authenticationManager, "authentication manager can't be null");
         Assert.notNull(authenticationConverter, "authentication converter can't be null");
@@ -162,5 +163,10 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
         } else {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), authenticationException.toString());
         }
+    }
+
+    public void setAuthenticationConverter(AuthenticationConverter authenticationConverter) {
+        Assert.notNull(authenticationConverter, "authenticationConverter cannot be null");
+        this.authenticationConverter = authenticationConverter;
     }
 }
