@@ -4,6 +4,8 @@ import com.befree.b3authauthorizationserver.authentication.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
 import com.befree.b3authauthorizationserver.web.B3authClientAuthenticationEndpointFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -19,6 +21,7 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
     private final List<AuthenticationConverter> authorizationRequestConverters = new ArrayList<>();
     private final List<AuthenticationProvider> authenticationProviders = new ArrayList<>();
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Consumer<List<AuthenticationConverter>> authorizationRequestConvertersConsumer = (authorizationRequestConverters) -> {};
     private Consumer<List<AuthenticationProvider>> authenticationProvidersConsumer = (authenticationProviders) -> {};
 
@@ -44,17 +47,7 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
-        B3authClientAuthenticationEndpointFilter clientAuthenticationEndpointFilter =
-                new B3authClientAuthenticationEndpointFilter(
-                        authenticationManager,
-                        new DelegatingAuthenticationConverter(authorizationRequestConverters),
-                        B3authConfigurationLoader.getSessionService(httpSecurity),
-                        B3authConfigurationLoader.getJwtGenerator(httpSecurity),
-                        B3authConfigurationLoader.getSessionGenerator(httpSecurity));
-
         List<AuthenticationConverter> authenticationConverters = createDefaultAuthenticationConverters();
-
-        System.out.println(authenticationConverters.size());
 
         if (!this.authorizationRequestConverters.isEmpty()) {
             authenticationConverters.addAll(0, this.authorizationRequestConverters);
@@ -62,10 +55,14 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
 
         this.authorizationRequestConvertersConsumer.accept(authenticationConverters);
 
-        System.out.println(authenticationConverters.size());
+        B3authClientAuthenticationEndpointFilter clientAuthenticationEndpointFilter =
+                new B3authClientAuthenticationEndpointFilter(
+                        authenticationManager,
+                        new DelegatingAuthenticationConverter(authenticationConverters),
+                        B3authConfigurationLoader.getSessionService(httpSecurity),
+                        B3authConfigurationLoader.getJwtGenerator(httpSecurity),
+                        B3authConfigurationLoader.getSessionGenerator(httpSecurity));
 
-        clientAuthenticationEndpointFilter.setAuthenticationConverter(
-                new DelegatingAuthenticationConverter(authenticationConverters));
 
         httpSecurity.addFilterBefore(postProcess(clientAuthenticationEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
 
@@ -75,8 +72,6 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
         List<AuthenticationConverter> authenticationConverters = new ArrayList<>();
 
         authenticationConverters.add(new B3authDefaultClientAuthenticationConverter());
-
-        System.out.println(authenticationConverters.size());
 
         return authenticationConverters;
     }

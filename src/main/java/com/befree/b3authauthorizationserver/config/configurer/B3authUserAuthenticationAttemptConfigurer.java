@@ -44,11 +44,6 @@ public class B3authUserAuthenticationAttemptConfigurer extends AbstractB3authCon
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
-        B3authUserAuthenticationAttemptEndpointFilter userAuthenticationAttemptEndpointFilter =
-                new B3authUserAuthenticationAttemptEndpointFilter(
-                        authenticationManager,
-                        new DelegatingAuthenticationConverter(authorizationRequestConverters));
-
         List<AuthenticationConverter> authenticationConverters = createDefaultAuthenticationConverters();
 
         if (!this.authorizationRequestConverters.isEmpty()) {
@@ -56,8 +51,10 @@ public class B3authUserAuthenticationAttemptConfigurer extends AbstractB3authCon
         }
         this.authorizationRequestConvertersConsumer.accept(authenticationConverters);
 
-        userAuthenticationAttemptEndpointFilter.setAuthenticationConverter(
-                new DelegatingAuthenticationConverter(authenticationConverters));
+        B3authUserAuthenticationAttemptEndpointFilter userAuthenticationAttemptEndpointFilter =
+                new B3authUserAuthenticationAttemptEndpointFilter(
+                        authenticationManager,
+                        new DelegatingAuthenticationConverter(authenticationConverters));
 
         httpSecurity.addFilterBefore(postProcess(userAuthenticationAttemptEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
 

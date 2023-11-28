@@ -52,14 +52,6 @@ public class B3authUserAuthenticationConfigurer extends AbstractB3authConfigurer
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
-        B3authUserAuthenticationEndpointFilter userAuthenticationEndpointFilter =
-                new B3authUserAuthenticationEndpointFilter(
-                        authenticationManager,
-                        new DelegatingAuthenticationConverter(authorizationRequestConverters),
-                        B3authConfigurationLoader.getSessionService(httpSecurity),
-                        B3authConfigurationLoader.getJwtGenerator(httpSecurity),
-                        B3authConfigurationLoader.getSessionGenerator(httpSecurity));
-
         List<AuthenticationConverter> authenticationConverters = createDefaultAuthenticationConverters();
 
         if (!this.authorizationRequestConverters.isEmpty()) {
@@ -67,8 +59,13 @@ public class B3authUserAuthenticationConfigurer extends AbstractB3authConfigurer
         }
         this.authorizationRequestConvertersConsumer.accept(authenticationConverters);
 
-        userAuthenticationEndpointFilter.setAuthenticationConverter(
-                new DelegatingAuthenticationConverter(authenticationConverters));
+        B3authUserAuthenticationEndpointFilter userAuthenticationEndpointFilter =
+                new B3authUserAuthenticationEndpointFilter(
+                        authenticationManager,
+                        new DelegatingAuthenticationConverter(authenticationConverters),
+                        B3authConfigurationLoader.getSessionService(httpSecurity),
+                        B3authConfigurationLoader.getJwtGenerator(httpSecurity),
+                        B3authConfigurationLoader.getSessionGenerator(httpSecurity));
 
         httpSecurity.addFilterBefore(postProcess(userAuthenticationEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
 
