@@ -1,9 +1,6 @@
 package com.befree.b3authauthorizationserver.config.configuration;
 
-import com.befree.b3authauthorizationserver.B3authAuthenticationAttemptService;
-import com.befree.b3authauthorizationserver.B3authSessionGenerator;
-import com.befree.b3authauthorizationserver.B3authSessionService;
-import com.befree.b3authauthorizationserver.B3authUserService;
+import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.jwt.JwtGenerator;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -13,7 +10,9 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
 
 import java.util.Map;
@@ -65,6 +64,25 @@ public final class B3authConfigurationLoader {
         return sessionService;
     }
 
+    public static JavaMailSender getMailSender(HttpSecurity httpSecurity) {
+        JavaMailSender mailSender = httpSecurity.getSharedObject(JavaMailSender.class);
+
+        if (mailSender == null) {
+
+            ResolvableType type = ResolvableType.forClass(JavaMailSender.class);
+
+            mailSender = getOptionalBean(httpSecurity, type);
+
+            if (mailSender != null) {
+                httpSecurity.setSharedObject(JavaMailSender.class, mailSender);
+            } else {
+                throw new RuntimeException("JavaMailSender bean must be specified.");
+            }
+        }
+
+        return mailSender;
+    }
+
     public static B3authUserService getUserService(HttpSecurity httpSecurity) {
         B3authUserService userService = httpSecurity.getSharedObject(B3authUserService.class);
         if (userService == null) {
@@ -81,6 +99,42 @@ public final class B3authConfigurationLoader {
 
         }
         return userService;
+    }
+
+    public static B3authClientService getClientService(HttpSecurity httpSecurity) {
+        B3authClientService clientService = httpSecurity.getSharedObject(B3authClientService.class);
+        if (clientService == null) {
+
+            ResolvableType type = ResolvableType.forClass(B3authClientService.class);
+
+            clientService = getOptionalBean(httpSecurity, B3authClientService.class);
+
+            if (clientService != null) {
+                httpSecurity.setSharedObject(B3authClientService.class, clientService);
+            } else {
+                throw new RuntimeException("B3authClientService bean must be specified.");
+            }
+
+        }
+        return clientService;
+    }
+
+    public static BCryptPasswordEncoder getPasswordEncoder(HttpSecurity httpSecurity) {
+        BCryptPasswordEncoder passwordEncoder = httpSecurity.getSharedObject(BCryptPasswordEncoder.class);
+        if (passwordEncoder == null) {
+
+            ResolvableType type = ResolvableType.forClass(BCryptPasswordEncoder.class);
+
+            passwordEncoder = getOptionalBean(httpSecurity, BCryptPasswordEncoder.class);
+
+            if (passwordEncoder != null) {
+                httpSecurity.setSharedObject(BCryptPasswordEncoder.class, passwordEncoder);
+            } else {
+                throw new RuntimeException("BCryptPasswordEncoder bean must be specified.");
+            }
+
+        }
+        return passwordEncoder;
     }
 
     public static B3authAuthenticationAttemptService getAuthenticationAttemptService(HttpSecurity httpSecurity) {
