@@ -85,7 +85,8 @@ public class B3authUserAuthenticationConfigurer extends AbstractB3authConfigurer
         B3authUserAuthenticationProvider userAuthenticationProvider =
                 new B3authUserAuthenticationProvider(
                         B3authConfigurationLoader.getUserService(httpSecurity),
-                        B3authConfigurationLoader.getAuthenticationAttemptService(httpSecurity));
+                        B3authConfigurationLoader.getAuthenticationAttemptService(httpSecurity),
+                        B3authConfigurationLoader.getPasswordEncoder(httpSecurity));
 
         authenticationProviders.add(userAuthenticationProvider);
 
