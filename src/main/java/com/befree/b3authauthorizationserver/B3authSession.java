@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface B3authSession {
     UUID getId();
     UUID getRefreshTokenId();
-    Long getUserId();
+    Long getSubjectId();
     String getType();
     LocalDateTime getIssuedAt();
     LocalDateTime getExpiresAt();

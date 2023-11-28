@@ -1,8 +1,6 @@
 package com.befree.b3authauthorizationserver.config.configurer;
 
-import com.befree.b3authauthorizationserver.authentication.B3authDefaultUserAuthenticationConverter;
-import com.befree.b3authauthorizationserver.authentication.B3authUserAuthenticationProvider;
-import com.befree.b3authauthorizationserver.authentication.DelegatingAuthenticationConverter;
+import com.befree.b3authauthorizationserver.authentication.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
 import com.befree.b3authauthorizationserver.web.B3authClientAuthenticationEndpointFilter;
@@ -71,7 +69,7 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
     private static List<AuthenticationConverter> createDefaultAuthenticationConverters() {
         List<AuthenticationConverter> authenticationConverters = new ArrayList<>();
 
-        authenticationConverters.add(new B3authDefaultUserAuthenticationConverter());
+        authenticationConverters.add(new B3authDefaultClientAuthenticationConverter());
 
         return authenticationConverters;
     }
@@ -79,10 +77,10 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
     private List<AuthenticationProvider> createDefaultAuthenticationProviders(HttpSecurity httpSecurity) {
         List<AuthenticationProvider> authenticationProviders = new ArrayList<>();
 
-        B3authUserAuthenticationProvider userAuthenticationProvider =
-                new B3authUserAuthenticationProvider(
-                        B3authConfigurationLoader.getUserService(httpSecurity),
-                        B3authConfigurationLoader.getAuthenticationAttemptService(httpSecurity));
+        B3authClientAuthenticationProvider userAuthenticationProvider =
+                new B3authClientAuthenticationProvider(
+                        B3authConfigurationLoader.getClientService(httpSecurity),
+                        B3authConfigurationLoader.getPasswordEncoder(httpSecurity));
 
         authenticationProviders.add(userAuthenticationProvider);
 

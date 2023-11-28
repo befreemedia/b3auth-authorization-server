@@ -19,7 +19,8 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
 
     public B3authUserAuthenticationAttemptProvider(B3authUserService b3authUserService,
                                                    B3authAuthenticationAttemptService b3authAuthenticationAttemptService,
-                                                   BCryptPasswordEncoder bCryptPasswordEncoder, JavaMailSender javaMailSender) {
+                                                   BCryptPasswordEncoder bCryptPasswordEncoder,
+                                                   JavaMailSender javaMailSender) {
         this.b3authUserService = b3authUserService;
         this.b3authAuthenticationAttemptService = b3authAuthenticationAttemptService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
