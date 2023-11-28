@@ -51,7 +51,7 @@ public class B3authUserAuthenticationProvider implements AuthenticationProvider 
                     "Authentication attempt already used.", B3authAuthorizationServerExceptionCode.B4008);
         }
 
-        if(!bCryptPasswordEncoder.matches(authenticationAttempt.getCode(), b3authAuthenticationToken.getCode())) {
+        if(!bCryptPasswordEncoder.matches(b3authAuthenticationToken.getCode(), authenticationAttempt.getCode())) {
             throw new B3authAuthenticationException("Code from email should be exactly the same as was sent.",
                     "Wrong email code.", B3authAuthorizationServerExceptionCode.B4009);
         }
