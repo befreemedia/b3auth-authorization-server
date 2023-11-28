@@ -55,10 +55,7 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
 
         String codeToSave = bCryptPasswordEncoder.encode(code);
 
-        B3authAuthenticationAttempt authenticationAttempt = new B3authDefaultAuthenticationAttempt(null,
-                user.getId(), codeToSave, LocalDateTime.now(), false, false, false);
-
-        b3authAuthenticationAttemptService.save(authenticationAttempt);
+        b3authAuthenticationAttemptService.create(user, codeToSave);
 
         SimpleMailMessage message = new SimpleMailMessage();
 
