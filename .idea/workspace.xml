@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/AuthenticationAttemptRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/AuthenticationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/ClientAuthenticationRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authAuthorizationServerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authAuthorizationServerConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authEndpointsList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authEndpointsList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationAttemptConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationAttemptConverter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +122,7 @@
       <workItem from="1701105516021" duration="6950000" />
       <workItem from="1701166039963" duration="4299000" />
       <workItem from="1701176965260" duration="3033000" />
-      <workItem from="1701188555745" duration="7996000" />
+      <workItem from="1701188555745" duration="10075000" />
     </task>
     <servers />
   </component>
