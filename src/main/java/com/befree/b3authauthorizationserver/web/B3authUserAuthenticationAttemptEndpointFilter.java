@@ -51,7 +51,7 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
         Assert.notNull(authenticationConverter, "authentication converter can't be null");
 
         this.authenticationManager = authenticationManager;
-        this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION);
+        this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION_ATTEMPT);
         this.authenticationConverter = authenticationConverter;
         this.authenticationDetailsSource = new WebAuthenticationDetailsSource();
     }

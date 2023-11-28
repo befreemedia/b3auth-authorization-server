@@ -58,7 +58,7 @@ public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilt
         Assert.notNull(sessionService, "token service can't be null");
 
         this.authenticationManager = authenticationManager;
-        this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION);
+        this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.CLIENT_AUTHENTICATION);
         this.authenticationConverter = authenticationConverter;
         this.authenticationDetailsSource = new WebAuthenticationDetailsSource();
         this.jwtGenerator = jwtGenerator;
