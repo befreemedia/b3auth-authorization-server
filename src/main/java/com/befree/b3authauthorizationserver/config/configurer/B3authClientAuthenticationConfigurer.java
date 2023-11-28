@@ -54,10 +54,15 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
 
         List<AuthenticationConverter> authenticationConverters = createDefaultAuthenticationConverters();
 
+        System.out.println(authenticationConverters.size());
+
         if (!this.authorizationRequestConverters.isEmpty()) {
             authenticationConverters.addAll(0, this.authorizationRequestConverters);
         }
+
         this.authorizationRequestConvertersConsumer.accept(authenticationConverters);
+
+        System.out.println(authenticationConverters.size());
 
         clientAuthenticationEndpointFilter.setAuthenticationConverter(
                 new DelegatingAuthenticationConverter(authenticationConverters));
@@ -70,6 +75,8 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
         List<AuthenticationConverter> authenticationConverters = new ArrayList<>();
 
         authenticationConverters.add(new B3authDefaultClientAuthenticationConverter());
+
+        System.out.println(authenticationConverters.size());
 
         return authenticationConverters;
     }
