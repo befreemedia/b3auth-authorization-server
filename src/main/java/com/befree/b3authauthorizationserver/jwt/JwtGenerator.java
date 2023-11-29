@@ -90,7 +90,7 @@ public class JwtGenerator {
         try {
             signedJwt.sign(jwsSigner);
         } catch (Exception e) {
-            System.out.println("as i said above, i will do it...");
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
         }
 
         return signedJwt.serialize();
