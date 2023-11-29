@@ -23,7 +23,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class JwtGenerator {
-    private final static String ALGORITHM = "RSA256";
+    private final static String ALGORITHM = "RSA";
     private final JWKSource<SecurityContext> jwkSource;
     private final JWSSignerFactory jwsSignerFactory = new DefaultJWSSignerFactory();
 
@@ -74,7 +74,6 @@ public class JwtGenerator {
             }
         } catch (Exception e) {
             LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
-            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getCause().toString());
             LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getLocalizedMessage());
         }
 
