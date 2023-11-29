@@ -61,7 +61,6 @@ public class B3authDefaultUserAuthenticationConverter implements AuthenticationC
                     B3authAuthorizationServerExceptionCode.B4004);
         }
 
-
         return new B3authAuthenticationToken(email, code);
     }
 }

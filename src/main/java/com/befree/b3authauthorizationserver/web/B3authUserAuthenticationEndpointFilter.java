@@ -112,6 +112,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
 
                 URL issuer = new URL(ISSUER);
 
+
                 Jwt authorizationToken = jwtGenerator.generate(b3authAuthorizationToken.getSessionId(),
                         B3authTokenType.AUTHORIZATION_TOKEN, AUTHORIZATION_TOKEN_SECONDS_VALID, now, claims,
                         b3authAuthorizationToken.getUserId(), new ArrayList<>(),
@@ -123,6 +124,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
                         b3authAuthorizationToken.getAuthorities(), issuer);
 
                 B3authSession session = b3authSessionGenerator.generate(authorizationToken, refreshToken, b3authAuthorizationToken);
+
 
                 sessionService.save(session);
 

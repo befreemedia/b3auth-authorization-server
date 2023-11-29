@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthenticationToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authDefaultUserAuthenticationConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserAuthenticationProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserAuthenticationProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authConfigurationLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authConfigurationLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthenticationEndpointFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthenticationEndpointFilter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +128,7 @@
       <workItem from="1701166039963" duration="4299000" />
       <workItem from="1701176965260" duration="3033000" />
       <workItem from="1701188555745" duration="14157000" />
-      <workItem from="1701268296199" duration="1818000" />
+      <workItem from="1701268296199" duration="3315000" />
     </task>
     <servers />
   </component>
