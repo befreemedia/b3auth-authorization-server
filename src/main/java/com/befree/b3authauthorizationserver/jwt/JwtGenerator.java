@@ -23,7 +23,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class JwtGenerator {
-    private final static String ALGORITHM = "RSA";
+    private final static String ALGORITHM = "RS256";
     private final JWKSource<SecurityContext> jwkSource;
     private final JWSSignerFactory jwsSignerFactory = new DefaultJWSSignerFactory();
 
