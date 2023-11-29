@@ -56,7 +56,6 @@ public class B3authUserAuthenticationProvider implements AuthenticationProvider 
                     "Wrong email code.", B3authAuthorizationServerExceptionCode.B4009);
         }
 
-
         return new B3authAuthorizationToken(null, user.getId(), user.getInitialised(), user.getAuthorities());
     }
 

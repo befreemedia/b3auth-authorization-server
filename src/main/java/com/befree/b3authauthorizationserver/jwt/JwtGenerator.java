@@ -1,6 +1,7 @@
 package com.befree.b3authauthorizationserver.jwt;
 
 import com.befree.b3authauthorizationserver.B3authUser;
+import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.factories.DefaultJWSSignerFactory;
 import com.nimbusds.jose.jwk.JWK;
@@ -11,6 +12,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.produce.JWSSignerFactory;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -32,6 +34,8 @@ public class JwtGenerator {
     public Jwt generate(UUID uuid, String type, Long secondsValid, LocalDateTime notBefore, Map<String, Object> claims,
                         Long subjectId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
                         URL issuer) {
+
+        LoggerFactory.getLogger(B3authConfigurationLoader.class).debug("generate loaded" + jwkSource);
 
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expiresAt = notBefore.plusSeconds(secondsValid);
@@ -69,8 +73,11 @@ public class JwtGenerator {
 
             }
         } catch (Exception e) {
-            System.out.println("i will do some handling, i promise");
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getCause().toString());
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getLocalizedMessage());
         }
+
         return null;
     }
 

@@ -5,6 +5,8 @@ import com.befree.b3authauthorizationserver.jwt.JwtGenerator;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
@@ -32,6 +34,8 @@ public final class B3authConfigurationLoader {
     public static JWKSource<SecurityContext> getJwkSource(HttpSecurity httpSecurity) {
         JWKSource<SecurityContext> jwkSource = httpSecurity.getSharedObject(JWKSource.class);
 
+
+
         if (jwkSource == null) {
             ResolvableType type = ResolvableType.forClassWithGenerics(JWKSource.class, SecurityContext.class);
 
@@ -41,6 +45,8 @@ public final class B3authConfigurationLoader {
                 httpSecurity.setSharedObject(JWKSource.class, jwkSource);
             }
         }
+
+        LoggerFactory.getLogger(B3authConfigurationLoader.class).debug("jwkSource loaded" + jwkSource);
 
         return jwkSource;
     }
