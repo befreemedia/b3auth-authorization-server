@@ -42,7 +42,7 @@ public class JwtGenerator {
 
         claims.put(B3authJwtClaims.SUBJECT, subjectId.toString());
         claims.put(B3authJwtClaims.TOKEN_TYPE, type);
-        claims.put(B3authJwtClaims.JWT_ID, uuid.toString());
+        claims.put(B3authJwtClaims.JWT_ID, uuid);
         claims.put(B3authJwtClaims.AUDIENCE, audience);
         claims.put(B3authJwtClaims.AUTHORITIES, authorities);
         claims.put(B3authJwtClaims.EXPIRES_AT, expiresAt);
