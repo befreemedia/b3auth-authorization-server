@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public interface B3authSession {
     UUID getId();
-    UUID getRefreshTokenId();
     Long getSubjectId();
     String getType();
     LocalDateTime getIssuedAt();

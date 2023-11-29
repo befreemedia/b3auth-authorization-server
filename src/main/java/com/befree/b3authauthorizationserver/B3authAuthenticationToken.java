@@ -30,7 +30,7 @@ public class B3authAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     @Nullable
     public Object getCredentials() {
-        return null;
+        return code;
     }
 
     @Override

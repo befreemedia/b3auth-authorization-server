@@ -73,6 +73,7 @@ public class JwtGenerator {
 
             }
         } catch (Exception e) {
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error("exception jwks user authentication endppint filter");
             LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
             LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getLocalizedMessage());
         }

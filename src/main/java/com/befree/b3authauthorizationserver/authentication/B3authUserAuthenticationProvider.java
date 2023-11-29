@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 public class B3authUserAuthenticationProvider implements AuthenticationProvider {
     private final B3authUserService b3authUserService;
@@ -56,7 +57,9 @@ public class B3authUserAuthenticationProvider implements AuthenticationProvider 
                     "Wrong email code.", B3authAuthorizationServerExceptionCode.B4009);
         }
 
-        return new B3authAuthorizationToken(null, user.getId(), user.getInitialised(), user.getAuthorities());
+        UUID sessionId = UUID.randomUUID();
+
+        return new B3authAuthorizationToken(sessionId, user.getId(), user.getInitialised(), user.getAuthorities());
     }
 
     @Override
