@@ -19,7 +19,8 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
 
     public B3authUserAuthenticationAttemptProvider(B3authUserService b3authUserService,
                                                    B3authAuthenticationAttemptService b3authAuthenticationAttemptService,
-                                                   BCryptPasswordEncoder bCryptPasswordEncoder, JavaMailSender javaMailSender) {
+                                                   BCryptPasswordEncoder bCryptPasswordEncoder,
+                                                   JavaMailSender javaMailSender) {
         this.b3authUserService = b3authUserService;
         this.b3authAuthenticationAttemptService = b3authAuthenticationAttemptService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -32,9 +33,10 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
         B3authUser user = b3authUserService.findByEmail(b3authAuthenticationAttemptToken.getEmail());
 
         if(user == null) {
-            b3authUserService.createAndSaveEmail(b3authAuthenticationAttemptToken.getEmail());
+            b3authUserService.createAndSaveByEmail(b3authAuthenticationAttemptToken.getEmail());
             user = b3authUserService.findByEmail(b3authAuthenticationAttemptToken.getEmail());
         }
+
 
         if(user == null) {
             throw new B3authAuthenticationException("User cannot be found in database.",
@@ -53,10 +55,7 @@ public class B3authUserAuthenticationAttemptProvider implements AuthenticationPr
 
         String codeToSave = bCryptPasswordEncoder.encode(code);
 
-        B3authAuthenticationAttempt authenticationAttempt = new B3authDefaultAuthenticationAttempt(null,
-                user.getId(), codeToSave, LocalDateTime.now(), false, false, false);
-
-        b3authAuthenticationAttemptService.save(authenticationAttempt);
+        b3authAuthenticationAttemptService.create(user, codeToSave);
 
         SimpleMailMessage message = new SimpleMailMessage();
 

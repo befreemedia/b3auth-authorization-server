@@ -1,5 +1,6 @@
 package com.befree.b3authauthorizationserver.jwt;
 
+import com.befree.b3authauthorizationserver.B3authUser;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
@@ -14,9 +15,9 @@ public abstract class Jwt extends AbstractB3authToken implements JwtToken, JwtCl
 
 
     public Jwt(UUID uuid, String value, LocalDateTime expiresAt, LocalDateTime issuedAt,
-               Map<String, Object> claims) {
+               Map<String, Object> claims, Long subjectId) {
 
-        super(uuid, value, expiresAt, issuedAt);
+        super(uuid, value, expiresAt, issuedAt, subjectId);
         this.claims = claims;
     }
 

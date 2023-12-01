@@ -1,5 +1,7 @@
 package com.befree.b3authauthorizationserver.jwt;
 
+import com.befree.b3authauthorizationserver.B3authUser;
+import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.factories.DefaultJWSSignerFactory;
 import com.nimbusds.jose.jwk.JWK;
@@ -10,6 +12,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.produce.JWSSignerFactory;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -20,7 +23,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class JwtGenerator {
-    private final static String ALGORITHM = "RSA256";
+    private final static String ALGORITHM = "RS256";
     private final JWKSource<SecurityContext> jwkSource;
     private final JWSSignerFactory jwsSignerFactory = new DefaultJWSSignerFactory();
 
@@ -30,12 +33,14 @@ public class JwtGenerator {
 
     public Jwt generate(UUID uuid, String type, Long secondsValid, LocalDateTime notBefore, Map<String, Object> claims,
                         Long subjectId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
-                               URL issuer) {
+                        URL issuer) {
+
+        LoggerFactory.getLogger(B3authConfigurationLoader.class).debug("generate loaded" + jwkSource);
 
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expiresAt = notBefore.plusSeconds(secondsValid);
 
-        claims.put(B3authJwtClaims.SUBJECT, subjectId);
+        claims.put(B3authJwtClaims.SUBJECT, subjectId.toString());
         claims.put(B3authJwtClaims.TOKEN_TYPE, type);
         claims.put(B3authJwtClaims.JWT_ID, uuid);
         claims.put(B3authJwtClaims.AUDIENCE, audience);
@@ -55,14 +60,24 @@ public class JwtGenerator {
             JWK jwk = jwks.get(0);
 
             String value = serialize(claims, jwk);
-            if(Objects.equals(type, B3authTokenType.REFRESH_TOKEN)) {
-                return new RefreshToken(uuid, value, expiresAt, issuedAt, claims);
-            } else {
-                return new AuthorizationToken(uuid, value, expiresAt, issuedAt, claims);
+
+            switch (type) {
+                case B3authTokenType.REFRESH_TOKEN:
+                    return new RefreshToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+                case B3authTokenType.AUTHORIZATION_TOKEN:
+                    return new AuthorizationToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+                case B3authTokenType.CLIENT_AUTHORIZATION_TOKEN:
+                    return new ClientAuthorizationToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+                case B3authTokenType.CLIENT_REFRESH_TOKEN:
+                    return new ClientRefreshToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
+
             }
         } catch (Exception e) {
-            System.out.println("i will do some handling, i promise");
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error("exception jwks user authentication endppint filter");
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getLocalizedMessage());
         }
+
         return null;
     }
 
@@ -75,7 +90,7 @@ public class JwtGenerator {
         try {
             signedJwt.sign(jwsSigner);
         } catch (Exception e) {
-            System.out.println("as i said above, i will do it...");
+            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
         }
 
         return signedJwt.serialize();

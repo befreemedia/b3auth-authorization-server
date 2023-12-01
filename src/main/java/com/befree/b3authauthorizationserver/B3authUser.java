@@ -12,9 +12,9 @@ public interface B3authUser extends UserDetails {
     String getEmail();
     LocalDateTime getCreated();
     Collection<? extends B3authRole> getRoles();
-    boolean initialised();
-    boolean suspended();
-    boolean banned();
-    boolean locked();
-    boolean deleted();
+    boolean getInitialised();
+    boolean getSuspended();
+    boolean getBanned();
+    boolean getLocked();
+    boolean getDeleted();
 }

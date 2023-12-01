@@ -1,10 +1,6 @@
 package com.befree.b3authauthorizationserver.web;
 
-import com.befree.b3authauthorizationserver.B3authAuthenticationException;
-import com.befree.b3authauthorizationserver.B3authAuthenticationToken;
-import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
-import com.befree.b3authauthorizationserver.B3authAuthorizationToken;
-import com.befree.b3authauthorizationserver.B3authSessionService;
+import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.jwt.*;
 import com.nimbusds.jose.shaded.gson.JsonObject;
@@ -37,9 +33,10 @@ import java.util.Map;
 public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter {
     private final RequestMatcher requestMatcher;
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationConverter authenticationConverter;
+    private AuthenticationConverter authenticationConverter;
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
     private final JwtGenerator jwtGenerator;
+    private final B3authSessionGenerator b3authSessionGenerator;
 
     private final B3authSessionService sessionService;
     private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 600L;
@@ -51,7 +48,9 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
     public B3authUserAuthenticationEndpointFilter(AuthenticationManager authenticationManager,
                                                   AuthenticationConverter authenticationConverter,
                                                   B3authSessionService sessionService,
-                                                  JwtGenerator jwtGenerator) {
+                                                  JwtGenerator jwtGenerator,
+                                                  B3authSessionGenerator b3authSessionGenerator) {
+        this.b3authSessionGenerator = b3authSessionGenerator;
         Assert.notNull(authenticationManager, "authentication manager can't be null");
         Assert.notNull(authenticationConverter, "authentication converter can't be null");
         Assert.notNull(jwtGenerator, "jwt generator must not be null");
@@ -113,19 +112,21 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
 
                 URL issuer = new URL(ISSUER);
 
+
                 Jwt authorizationToken = jwtGenerator.generate(b3authAuthorizationToken.getSessionId(),
                         B3authTokenType.AUTHORIZATION_TOKEN, AUTHORIZATION_TOKEN_SECONDS_VALID, now, claims,
                         b3authAuthorizationToken.getUserId(), new ArrayList<>(),
                         b3authAuthorizationToken.getAuthorities(), issuer);
-
-                sessionService.save(authorizationToken);
 
                 Jwt refreshToken = jwtGenerator.generate(b3authAuthorizationToken.getSessionId(),
                         B3authTokenType.REFRESH_TOKEN, REFRESH_TOKEN_SECONDS_VALID, now, claims,
                         b3authAuthorizationToken.getUserId(), new ArrayList<>(),
                         b3authAuthorizationToken.getAuthorities(), issuer);
 
-                sessionService.save(refreshToken);
+                B3authSession session = b3authSessionGenerator.generate(authorizationToken, refreshToken, b3authAuthorizationToken);
+
+
+                sessionService.save(session);
 
                 json.addProperty("access_token", "Bearer " + authorizationToken.getValue());
 
@@ -164,5 +165,10 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
         } else {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), authenticationException.toString());
         }
+    }
+
+    public void setAuthenticationConverter(AuthenticationConverter authenticationConverter) {
+        Assert.notNull(authenticationConverter, "authenticationConverter cannot be null");
+        this.authenticationConverter = authenticationConverter;
     }
 }

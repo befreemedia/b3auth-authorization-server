@@ -1,11 +1,13 @@
 package com.befree.b3authauthorizationserver.config.configurer;
 
+import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
 import com.befree.b3authauthorizationserver.web.NimbusJwkEndpointFilter;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,15 +23,64 @@ import org.springframework.util.Assert;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<B3authAuthorizationServerConfigurer, HttpSecurity> {
     private RequestMatcher endpointsMatcher;
+    private final Map<Class<? extends AbstractB3authConfigurer>, AbstractB3authConfigurer> configurers = createConfigurers();
+
+    private Map<Class<? extends AbstractB3authConfigurer>, AbstractB3authConfigurer> createConfigurers() {
+        Map<Class<? extends AbstractB3authConfigurer>, AbstractB3authConfigurer> configurers = new LinkedHashMap<>();
+
+        configurers.put(B3authClientAuthenticationConfigurer.class, new B3authClientAuthenticationConfigurer(this::postProcess));
+        configurers.put(B3authUserAuthenticationConfigurer.class, new B3authUserAuthenticationConfigurer(this::postProcess));
+        configurers.put(B3authUserAuthenticationAttemptConfigurer.class, new B3authUserAuthenticationAttemptConfigurer(this::postProcess));
+
+        return configurers;
+    }
 
     public RequestMatcher getEndpointsMatcher() {
         return (request) -> {
             return this.endpointsMatcher.matches(request);
         };
+    }
+
+    public B3authAuthorizationServerConfigurer b3authSessionService(B3authSessionService sessionService) {
+        Assert.notNull(sessionService, "sessionService cannot be null");
+        getBuilder().setSharedObject(B3authSessionService.class, sessionService);
+        return this;
+    }
+
+    public B3authAuthorizationServerConfigurer b3authUserService(B3authUserService userService) {
+        Assert.notNull(userService, "sessionService cannot be null");
+        getBuilder().setSharedObject(B3authUserService.class, userService);
+        return this;
+    }
+
+    public B3authAuthorizationServerConfigurer b3authClientService(B3authClientService clientService) {
+        Assert.notNull(clientService, "clientService cannot be null");
+        getBuilder().setSharedObject(B3authClientService.class, clientService);
+        return this;
+    }
+
+    public B3authAuthorizationServerConfigurer b3authAuthenticationAttemptService(B3authAuthenticationAttemptService authenticationAttemptService) {
+        Assert.notNull(authenticationAttemptService, "authenticationAttemptService cannot be null");
+        getBuilder().setSharedObject(B3authAuthenticationAttemptService.class, authenticationAttemptService);
+        return this;
+    }
+
+    public B3authAuthorizationServerConfigurer b3authSessionGenerator(B3authSessionGenerator sessionGenerator) {
+        Assert.notNull(sessionGenerator, "sessionGenerator cannot be null");
+        getBuilder().setSharedObject(B3authSessionGenerator.class, sessionGenerator);
+        return this;
+    }
+
+    public B3authAuthorizationServerConfigurer authorizationServerSettings(B3authAuthorizationServerSettings authorizationServerSettings) {
+        Assert.notNull(authorizationServerSettings, "authorizationServerSettings cannot be null");
+        getBuilder().setSharedObject(B3authAuthorizationServerSettings.class, authorizationServerSettings);
+        return this;
     }
 
 
@@ -38,11 +89,16 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
         validateAuthorizationServerSettings(authorizationServerSettings);
 
+        this.configurers.values().forEach(configurer -> {
+            configurer.init(httpSecurity);
+        });
+
         List<RequestMatcher> requestMatchers = new ArrayList<RequestMatcher>();
         for (Field field : B3authEndpointsList.class.getDeclaredFields()) {
             if(field.getType() == String.class) {
                 String value = (String) field.get(field.getType());
-                requestMatchers.add(new AntPathRequestMatcher(value));
+                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
+                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
             }
         }
 
@@ -50,15 +106,24 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
 
         ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling = (ExceptionHandlingConfigurer) httpSecurity.getConfigurer(ExceptionHandlingConfigurer.class);
         if (exceptionHandling != null) {
-            exceptionHandling.defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new OrRequestMatcher(getRequestMatchers(B3authEndpointsList.CLIENT_AUTHENTICATION, B3authEndpointsList.USER_AUTHENTICATION, B3authEndpointsList.CLIENT_TOKEN_REVOCATION, B3authEndpointsList.USER_TOKEN_REFRESH)));
+            exceptionHandling.defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                    new OrRequestMatcher(getRequestMatchers(B3authEndpointsList.CLIENT_AUTHENTICATION,
+                            B3authEndpointsList.USER_AUTHENTICATION, B3authEndpointsList.USER_AUTHENTICATION_ATTEMPT,
+                            B3authEndpointsList.CLIENT_TOKEN_REFRESH, B3authEndpointsList.USER_TOKEN_REFRESH)));
         }
     }
 
     public void configure(HttpSecurity httpSecurity) {
+        this.configurers.values().forEach(configurer -> configurer.configure(httpSecurity));
+
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
+
         B3authAuthorizationServerContextFilter authorizationServerContextFilter = new B3authAuthorizationServerContextFilter(authorizationServerSettings);
+
         httpSecurity.addFilterAfter(this.postProcess(authorizationServerContextFilter), SecurityContextHolderFilter.class);
+
         JWKSource<SecurityContext> jwkSource = B3authConfigurationLoader.getJwkSource(httpSecurity);
+
         if (jwkSource != null) {
             NimbusJwkEndpointFilter jwkSetEndpointFilter = new NimbusJwkEndpointFilter(jwkSource);
             httpSecurity.addFilterBefore(this.postProcess(jwkSetEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
