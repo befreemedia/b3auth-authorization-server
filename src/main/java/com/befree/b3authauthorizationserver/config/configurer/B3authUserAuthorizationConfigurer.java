@@ -58,12 +58,12 @@ public class B3authUserAuthorizationConfigurer extends AbstractB3authConfigurer{
         }
         this.authorizationRequestConvertersConsumer.accept(authenticationConverters);
 
-        B3authUserAuthorizationEndpointFilter userAuthenticationEndpointFilter =
+        B3authUserAuthorizationEndpointFilter userAuthorizationEndpointFilter =
                 new B3authUserAuthorizationEndpointFilter(
                         new DelegatingAuthenticationConverter(authenticationConverters),
                         authenticationManager);
 
-        httpSecurity.addFilterBefore(postProcess(userAuthenticationEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
+        httpSecurity.addFilterBefore(postProcess(userAuthorizationEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
 
     }
 

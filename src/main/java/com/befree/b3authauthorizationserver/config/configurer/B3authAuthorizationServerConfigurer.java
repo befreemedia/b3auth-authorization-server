@@ -154,6 +154,7 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
     private static void validateAuthorizationServerSettings(B3authAuthorizationServerSettings authorizationServerSettings) {
         if (authorizationServerSettings.getIssuer() != null) {
             URI issuerUri;
+
             try {
                 issuerUri = new URI(authorizationServerSettings.getIssuer());
                 issuerUri.toURL();

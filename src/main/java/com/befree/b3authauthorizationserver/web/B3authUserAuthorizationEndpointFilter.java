@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
@@ -41,36 +42,41 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("converting");
-        Authentication authentication = authenticationConverter.convert(request);
-        LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("converted");
-        if (authentication instanceof AbstractAuthenticationToken) {
-            ((AbstractAuthenticationToken) authentication)
-                    .setDetails(this.authenticationDetailsSource.buildDetails(request));
+        try {
+            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("converting");
+            Authentication authentication = authenticationConverter.convert(request);
+            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("converted");
+            if (authentication instanceof AbstractAuthenticationToken) {
+                ((AbstractAuthenticationToken) authentication)
+                        .setDetails(this.authenticationDetailsSource.buildDetails(request));
+            }
+
+            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("details set");
+
+            Authentication authenticationResult = this.authenticationManager.authenticate(authentication);
+
+            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("manager success");
+
+            if (authenticationResult instanceof B3authAuthorizationToken) {
+
+                SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
+                context.setAuthentication(authenticationResult);
+                LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("set authentication");
+                this.securityContextHolderStrategy.setContext(context);
+                this.securityContextRepository.saveContext(context, request, response);
+
+                LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("all succeed");
+
+                filterChain.doFilter(request, response);
+
+            } else {
+                LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("wrong token");
+                throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration",
+                        B3authAuthorizationServerExceptionCode.B5001);
+            }
+        } catch (AuthenticationException authenticationException) {
+            this.securityContextHolderStrategy.clearContext();
+            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).error(authenticationException.getMessage());
         }
-
-        LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("details set");
-
-        Authentication authenticationResult = this.authenticationManager.authenticate(authentication);
-
-        LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("manager success");
-
-        if (authenticationResult instanceof B3authAuthorizationToken) {
-
-            SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
-            context.setAuthentication(authenticationResult);
-            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("set authentication");
-            this.securityContextHolderStrategy.setContext(context);
-            this.securityContextRepository.saveContext(context, request, response);
-
-            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("all succeed");
-
-        }  else {
-            LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("wrong token");
-            throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration",
-                    B3authAuthorizationServerExceptionCode.B5001);
-        }
-
-        filterChain.doFilter(request, response);
     }
 }
