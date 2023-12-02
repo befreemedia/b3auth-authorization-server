@@ -136,6 +136,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
 
                 var stringValue = json.toString();
 
+                response.setStatus(200);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 response.setContentLength(stringValue.getBytes().length);
                 response.getWriter().write(stringValue);
