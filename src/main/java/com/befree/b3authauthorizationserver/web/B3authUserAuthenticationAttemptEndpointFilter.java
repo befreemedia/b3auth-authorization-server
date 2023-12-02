@@ -84,7 +84,6 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
             logger.warn("result");
 
             if (authenticationResult instanceof B3authAuthenticationAttemptToken) {
-                filterChain.doFilter(request, response);
                 this.setAuthenticationSuccess(request, response, authenticationResult);
             } else {
                 throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration",
