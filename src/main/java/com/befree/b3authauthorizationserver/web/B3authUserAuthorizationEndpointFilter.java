@@ -57,6 +57,15 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
                     String value = (String) field.get(field.getType());
                     requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
                     requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
+                    if(request.getRequestURI() != null && request.getRequestURI().contains(value)) {
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
+
+                    if(request.getPathInfo() != null && request.getPathInfo().contains(value)) {
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
                 } catch (Exception ignored) {
                 }
             }

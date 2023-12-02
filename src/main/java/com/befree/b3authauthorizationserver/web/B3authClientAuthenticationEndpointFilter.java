@@ -89,7 +89,6 @@ public class B3authClientAuthenticationEndpointFilter extends OncePerRequestFilt
             }
 
             if (authenticationResult instanceof B3authClientAuthorizationToken) {
-                filterChain.doFilter(request, response);
                 this.setAuthenticationSuccess(request, response, authenticationResult);
             } else {
                 throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration",
