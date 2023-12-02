@@ -40,7 +40,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
     private final B3authSessionGenerator b3authSessionGenerator;
 
     private final B3authSessionService sessionService;
-    private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 600L;
+    private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 864000L;
     // todo temporary unchangeable, will be done from properties
     private final Long REFRESH_TOKEN_SECONDS_VALID = 5184000L;
     private final String ISSUER = "https://domain.com";
