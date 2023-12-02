@@ -4,7 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +22,13 @@ public interface JwtClaimsAccessor extends ClaimAccessor {
     }
 
     default LocalDateTime getExpiresAt() {
-        return this.getClaim(B3authJwtClaims.EXPIRES_AT);
+        var object = this.getClaim(B3authJwtClaims.EXPIRES_AT);
+        if(object instanceof Date date) {
+            return date.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+        }
+        return (LocalDateTime) object;
     }
 
     default LocalDateTime getNotBefore() {
