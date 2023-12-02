@@ -4,6 +4,7 @@ import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
+import com.befree.b3authauthorizationserver.web.B3authUserAuthorizationEndpointFilter;
 import com.befree.b3authauthorizationserver.web.NimbusJwkEndpointFilter;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -37,6 +38,7 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
         configurers.put(B3authClientAuthenticationConfigurer.class, new B3authClientAuthenticationConfigurer(this::postProcess));
         configurers.put(B3authUserAuthenticationConfigurer.class, new B3authUserAuthenticationConfigurer(this::postProcess));
         configurers.put(B3authUserAuthenticationAttemptConfigurer.class, new B3authUserAuthenticationAttemptConfigurer(this::postProcess));
+        configurers.put(B3authUserAuthorizationConfigurer.class, new B3authUserAuthorizationConfigurer(this::postProcess));
 
         return configurers;
     }
