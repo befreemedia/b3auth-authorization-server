@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Objects;
 
 public class B3authUserTokenAuthenticationProvider implements AuthenticationProvider {
@@ -43,7 +45,9 @@ public class B3authUserTokenAuthenticationProvider implements AuthenticationProv
                     "Session is after expiration date.", B3authAuthorizationServerExceptionCode.B4009);
         }
 
-        if(((LocalDateTime) token.getClaim(B3authJwtClaims.NOT_BEFORE)).isAfter(LocalDateTime.now())) {
+        if(((Date) token.getClaim(B3authJwtClaims.NOT_BEFORE)).toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime().isAfter(LocalDateTime.now())) {
             throw new B3authAuthenticationException("Session is not available yet..",
                     "Token might be used after not before date..", B3authAuthorizationServerExceptionCode.B4009);
         }
