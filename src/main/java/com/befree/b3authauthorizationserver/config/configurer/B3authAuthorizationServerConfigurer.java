@@ -101,6 +101,8 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
                 String value = (String) field.get(field.getType());
                 requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
                 requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
+                requestMatchers.add(new AntPathRequestMatcher("/api" + value, HttpMethod.GET.name()));
+                requestMatchers.add(new AntPathRequestMatcher("/api"  +value, HttpMethod.POST.name()));
             }
         }
 
