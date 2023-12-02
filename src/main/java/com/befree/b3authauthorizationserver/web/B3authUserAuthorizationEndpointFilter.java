@@ -4,7 +4,6 @@ import com.befree.b3authauthorizationserver.B3authAuthenticationException;
 import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
 import com.befree.b3authauthorizationserver.B3authAuthorizationToken;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
-import com.befree.b3authauthorizationserver.jwt.JwtGenerator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,9 +53,12 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
 
         for (Field field : B3authEndpointsList.class.getDeclaredFields()) {
             if(field.getType() == String.class) {
-                String value = (String) field.get(field.getType());
-                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
-                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
+                try {
+                    String value = (String) field.get(field.getType());
+                    requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
+                    requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
+                } catch (Exception ignored) {
+                }
             }
         }
 
