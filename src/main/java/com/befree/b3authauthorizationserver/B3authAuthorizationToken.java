@@ -50,7 +50,7 @@ public class B3authAuthorizationToken extends AbstractAuthenticationToken {
     }
 
     @Override
-    public Object getPrincipal() {
+    public Long getPrincipal() {
         return this.userId;
     }
 
