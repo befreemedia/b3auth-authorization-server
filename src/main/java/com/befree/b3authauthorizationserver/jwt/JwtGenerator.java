@@ -128,7 +128,7 @@ public class JwtGenerator {
 
             claims = jwtClaimsSet.getClaims();
 
-            uuid = (UUID) jwtClaimsSet.getClaim(B3authJwtClaims.JWT_ID);
+            uuid = UUID.fromString((String) jwtClaimsSet.getClaim(B3authJwtClaims.JWT_ID));
 
             type = jwtClaimsSet.getStringClaim(B3authJwtClaims.TOKEN_TYPE);
         } catch (ParseException e) {
