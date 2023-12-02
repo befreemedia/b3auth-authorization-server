@@ -19,6 +19,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -57,7 +58,8 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
         Assert.notNull(sessionService, "token service can't be null");
 
         this.authenticationManager = authenticationManager;
-        this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION);
+        this.requestMatcher = new OrRequestMatcher(new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION),
+                new AntPathRequestMatcher("/api" + B3authEndpointsList.USER_AUTHENTICATION));
         this.authenticationConverter = authenticationConverter;
         this.authenticationDetailsSource = new WebAuthenticationDetailsSource();
         this.jwtGenerator = jwtGenerator;
