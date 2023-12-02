@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="" />
+    <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authBearerAuthenticationToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserTokenAuthenticationConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/authentication/B3authUserTokenAuthenticationProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/web/B3authUserAuthorizationEndpointFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthorizationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/B3authAuthorizationToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/jwt/JwtGenerator.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,7 +128,13 @@
       <workItem from="1701166039963" duration="4299000" />
       <workItem from="1701176965260" duration="3033000" />
       <workItem from="1701188555745" duration="14157000" />
-      <workItem from="1701268296199" duration="4564000" />
+      <workItem from="1701268296199" duration="5028000" />
+      <workItem from="1701273859297" duration="33000" />
+      <workItem from="1701363144538" duration="598000" />
+      <workItem from="1701435011289" duration="1341000" />
+      <workItem from="1701460785937" duration="565000" />
+      <workItem from="1701462425872" duration="11000" />
+      <workItem from="1701465511539" duration="3778000" />
     </task>
     <servers />
   </component>
