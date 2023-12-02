@@ -68,6 +68,8 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
                 this.securityContextHolderStrategy.setContext(context);
                 this.securityContextRepository.saveContext(context, request, response);
 
+                SecurityContextHolder.getContext().setAuthentication(authenticationResult);
+
                 LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("all succeed");
 
                 filterChain.doFilter(request, response);
