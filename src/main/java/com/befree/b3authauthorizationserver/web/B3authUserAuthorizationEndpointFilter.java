@@ -85,6 +85,7 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
         } catch (AuthenticationException authenticationException) {
             this.securityContextHolderStrategy.clearContext();
             LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).error(authenticationException.getMessage());
+            throw authenticationException;
         }
     }
 }
