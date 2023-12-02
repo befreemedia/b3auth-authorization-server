@@ -41,7 +41,7 @@ public class JwtGenerator {
                         Long subjectId, List<String> audience, Collection<? extends GrantedAuthority> authorities,
                         URL issuer) {
 
-        LoggerFactory.getLogger(B3authConfigurationLoader.class).debug("generate loaded" + jwkSource);
+        LoggerFactory.getLogger(JwtGenerator.class).debug("generate loaded" + jwkSource);
 
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expiresAt = notBefore.plusSeconds(secondsValid);
@@ -78,9 +78,9 @@ public class JwtGenerator {
                     return new ClientRefreshToken(uuid, value, expiresAt, issuedAt, claims, subjectId);
             }
         } catch (Exception e) {
-            LoggerFactory.getLogger(B3authConfigurationLoader.class).error("exception jwks user authentication endppint filter");
-            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
-            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getLocalizedMessage());
+            LoggerFactory.getLogger(JwtGenerator.class).error("exception jwks user authentication endppint filter");
+            LoggerFactory.getLogger(JwtGenerator.class).error(e.getMessage());
+            LoggerFactory.getLogger(JwtGenerator.class).error(e.getLocalizedMessage());
         }
 
         return null;
@@ -167,7 +167,7 @@ public class JwtGenerator {
         try {
             signedJwt.sign(jwsSigner);
         } catch (Exception e) {
-            LoggerFactory.getLogger(B3authConfigurationLoader.class).error(e.getMessage());
+            LoggerFactory.getLogger(JwtGenerator.class).error(e.getMessage());
         }
 
         return signedJwt.serialize();
