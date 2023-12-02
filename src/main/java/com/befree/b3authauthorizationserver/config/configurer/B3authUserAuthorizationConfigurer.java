@@ -62,8 +62,9 @@ public class B3authUserAuthorizationConfigurer extends AbstractB3authConfigurer{
                         authenticationManager);
 
 
-        httpSecurity.addFilterAfter(postProcess(userAuthorizationEndpointFilter), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(postProcess(userAuthorizationEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
 
+        System.out.println("ADDED");
     }
 
     private static List<AuthenticationConverter> createDefaultAuthenticationConverters() {
