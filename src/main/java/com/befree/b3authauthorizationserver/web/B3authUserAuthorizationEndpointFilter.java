@@ -3,12 +3,14 @@ package com.befree.b3authauthorizationserver.web;
 import com.befree.b3authauthorizationserver.B3authAuthenticationException;
 import com.befree.b3authauthorizationserver.B3authAuthorizationServerExceptionCode;
 import com.befree.b3authauthorizationserver.B3authAuthorizationToken;
+import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.jwt.JwtGenerator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,9 +23,15 @@ import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter {
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
@@ -42,7 +50,18 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if(request.getPathInfo().contains("/b3auth")) {
+        List<RequestMatcher> requestMatchers = new ArrayList<RequestMatcher>();
+
+        for (Field field : B3authEndpointsList.class.getDeclaredFields()) {
+            if(field.getType() == String.class) {
+                String value = (String) field.get(field.getType());
+                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
+                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
+            }
+        }
+
+        var matcher = new OrRequestMatcher(requestMatchers);
+        if(matcher.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }
