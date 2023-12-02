@@ -64,7 +64,7 @@ public class B3authClientAuthenticationConfigurer extends AbstractB3authConfigur
                         B3authConfigurationLoader.getSessionGenerator(httpSecurity));
 
 
-        httpSecurity.addFilterBefore(postProcess(clientAuthenticationEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
+        httpSecurity.addFilter(postProcess(clientAuthenticationEndpointFilter));
 
     }
 
