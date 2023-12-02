@@ -85,7 +85,7 @@ public class B3authUserTokenAuthenticationProvider implements AuthenticationProv
                     "Session is after expiration date.", B3authAuthorizationServerExceptionCode.B4009);
         }
 
-        if(!Objects.equals(session.getType(), B3authTokenType.AUTHORIZATION_TOKEN)) {
+        if(!Objects.equals(session.getType(), "user-session")) {
             throw new B3authAuthenticationException("This token can't be used to authorization.",
                     "Only authorization token can be used to authorization.", B3authAuthorizationServerExceptionCode.B4009);
         }
