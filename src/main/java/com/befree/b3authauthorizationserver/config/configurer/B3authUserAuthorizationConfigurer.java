@@ -9,9 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
@@ -63,7 +61,8 @@ public class B3authUserAuthorizationConfigurer extends AbstractB3authConfigurer{
                         new DelegatingAuthenticationConverter(authenticationConverters),
                         authenticationManager);
 
-        httpSecurity.addFilterBefore(postProcess(userAuthorizationEndpointFilter), AbstractPreAuthenticatedProcessingFilter.class);
+
+        httpSecurity.addFilterAfter(postProcess(userAuthorizationEndpointFilter), AbstractAuthenticationProcessingFilter.class);
 
     }
 
