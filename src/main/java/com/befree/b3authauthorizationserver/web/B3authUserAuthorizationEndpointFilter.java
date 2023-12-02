@@ -49,6 +49,9 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
             if (authentication instanceof AbstractAuthenticationToken) {
                 ((AbstractAuthenticationToken) authentication)
                         .setDetails(this.authenticationDetailsSource.buildDetails(request));
+            } else {
+                throw new B3authAuthenticationException("Convertion failed.", "tb",
+                        B3authAuthorizationServerExceptionCode.B4004);
             }
 
             LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("details set");
