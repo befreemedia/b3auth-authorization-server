@@ -2,18 +2,21 @@ package com.befree.b3authauthorizationserver.config.configurer;
 
 import com.befree.b3authauthorizationserver.authentication.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
+import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
-import com.befree.b3authauthorizationserver.web.B3authUserAuthenticationEndpointFilter;
 import com.befree.b3authauthorizationserver.web.B3authUserAuthorizationEndpointFilter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.*;
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -28,13 +31,27 @@ public class B3authUserAuthorizationConfigurer extends AbstractHttpConfigurer<B3
     private AuthenticationFailureHandler errorResponseHandler;
     private SessionAuthenticationStrategy sessionAuthenticationStrategy;
 
+    private RequestMatcher endpointsMatcher;
 
 
 
     @Override
-    public void init(HttpSecurity httpSecurity) {
+    public void init(HttpSecurity httpSecurity) throws Exception{
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
+
+        List<RequestMatcher> requestMatchers = new ArrayList<RequestMatcher>();
+        for (Field field : B3authEndpointsList.class.getDeclaredFields()) {
+            if(field.getType() == String.class) {
+                String value = (String) field.get(field.getType());
+                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
+                requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
+                requestMatchers.add(new AntPathRequestMatcher("/api" + value, HttpMethod.GET.name()));
+                requestMatchers.add(new AntPathRequestMatcher("/api" + value, HttpMethod.POST.name()));
+            }
+        }
+
+        this.endpointsMatcher = new OrRequestMatcher(requestMatchers);
         List<AuthenticationProvider> authenticationProviders = createDefaultAuthenticationProviders(httpSecurity);
         if (!this.authenticationProviders.isEmpty()) {
             authenticationProviders.addAll(0, this.authenticationProviders);
@@ -63,6 +80,10 @@ public class B3authUserAuthorizationConfigurer extends AbstractHttpConfigurer<B3
 
 
         httpSecurity.addFilterBefore(postProcess(userAuthorizationEndpointFilter), AnonymousAuthenticationFilter.class);
+    }
+
+    public RequestMatcher getNegatedEndpointsMatcher() {
+        return (request -> !this.endpointsMatcher.matches(request));
     }
 
     private static List<AuthenticationConverter> createDefaultAuthenticationConverters() {
