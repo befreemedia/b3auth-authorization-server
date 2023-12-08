@@ -32,9 +32,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:befreemedia/b3auth-authorization-server.git</connection>
-        <developerConnection>scm:git:ssh://github.com:befreemedia/b3auth-authorization-server.git</developerConnection>
-        <url>https://github.com/befreemedia/b3auth-authorization-server/tree/main</url>
+        <connection>scm:git:git@github.com:the-directai/b3auth-authorization-server.git</connection>
+        <developerConnection>scm:git:ssh://github.com:the-directai/b3auth-authorization-server.git</developerConnection>
+        <url>https://github.com/the-directai/b3auth-authorization-server/tree/main</url>
     </scm>
 
     <distributionManagement>
