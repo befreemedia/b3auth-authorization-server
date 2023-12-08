@@ -23,6 +23,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -51,7 +52,8 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
         Assert.notNull(authenticationConverter, "authentication converter can't be null");
 
         this.authenticationManager = authenticationManager;
-        this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION_ATTEMPT);
+        this.requestMatcher = new OrRequestMatcher(new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION_ATTEMPT),
+                new AntPathRequestMatcher("/api" + B3authEndpointsList.USER_AUTHENTICATION_ATTEMPT));
         this.authenticationConverter = authenticationConverter;
         this.authenticationDetailsSource = new WebAuthenticationDetailsSource();
     }
@@ -84,7 +86,6 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
             logger.warn("result");
 
             if (authenticationResult instanceof B3authAuthenticationAttemptToken) {
-                filterChain.doFilter(request, response);
                 this.setAuthenticationSuccess(request, response, authenticationResult);
             } else {
                 throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration",
@@ -107,10 +108,9 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
 
                 URL issuer = new URL(ISSUER);
 
-                json.addProperty("code", b3authAuthenticationAttemptToken.getCode());
-
                 var stringValue = json.toString();
 
+                response.setStatus(200);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 response.setContentLength(stringValue.getBytes().length);
                 response.getWriter().write(stringValue);

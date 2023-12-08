@@ -4,6 +4,7 @@ import com.befree.b3authauthorizationserver.*;
 import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.befree.b3authauthorizationserver.config.configuration.B3authEndpointsList;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
+import com.befree.b3authauthorizationserver.web.B3authUserAuthorizationEndpointFilter;
 import com.befree.b3authauthorizationserver.web.NimbusJwkEndpointFilter;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -99,6 +100,8 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
                 String value = (String) field.get(field.getType());
                 requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.GET.name()));
                 requestMatchers.add(new AntPathRequestMatcher(value, HttpMethod.POST.name()));
+                requestMatchers.add(new AntPathRequestMatcher("/api" + value, HttpMethod.GET.name()));
+                requestMatchers.add(new AntPathRequestMatcher("/api" + value, HttpMethod.POST.name()));
             }
         }
 
@@ -152,6 +155,7 @@ public class B3authAuthorizationServerConfigurer extends AbstractHttpConfigurer<
     private static void validateAuthorizationServerSettings(B3authAuthorizationServerSettings authorizationServerSettings) {
         if (authorizationServerSettings.getIssuer() != null) {
             URI issuerUri;
+
             try {
                 issuerUri = new URI(authorizationServerSettings.getIssuer());
                 issuerUri.toURL();

@@ -19,6 +19,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -39,7 +40,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
     private final B3authSessionGenerator b3authSessionGenerator;
 
     private final B3authSessionService sessionService;
-    private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 600L;
+    private final Long AUTHORIZATION_TOKEN_SECONDS_VALID = 864000L;
     // todo temporary unchangeable, will be done from properties
     private final Long REFRESH_TOKEN_SECONDS_VALID = 5184000L;
     private final String ISSUER = "https://domain.com";
@@ -57,7 +58,8 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
         Assert.notNull(sessionService, "token service can't be null");
 
         this.authenticationManager = authenticationManager;
-        this.requestMatcher = new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION);
+        this.requestMatcher = new OrRequestMatcher(new AntPathRequestMatcher(B3authEndpointsList.USER_AUTHENTICATION),
+                new AntPathRequestMatcher("/api" + B3authEndpointsList.USER_AUTHENTICATION));
         this.authenticationConverter = authenticationConverter;
         this.authenticationDetailsSource = new WebAuthenticationDetailsSource();
         this.jwtGenerator = jwtGenerator;
@@ -88,7 +90,6 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
             }
 
             if (authenticationResult instanceof B3authAuthorizationToken) {
-                filterChain.doFilter(request, response);
                 this.setAuthenticationSuccess(request, response, authenticationResult);
             } else {
                 throw new B3authAuthenticationException("Server authentication error.", "Wrong server configuration",
@@ -136,6 +137,7 @@ public class B3authUserAuthenticationEndpointFilter extends OncePerRequestFilter
 
                 var stringValue = json.toString();
 
+                response.setStatus(200);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 response.setContentLength(stringValue.getBytes().length);
                 response.getWriter().write(stringValue);
