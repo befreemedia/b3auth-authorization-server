@@ -43,7 +43,8 @@ public class B3authAuthorizationServerConfiguration {
 
     public static void applyTokenAuthorizationSecurity(HttpSecurity http) throws Exception {
         B3authAuthorizationServerConfigurer authorizationServerConfigurer = new B3authAuthorizationServerConfigurer();
-        RequestMatcher endpointsMatcher = new NegatedRequestMatcher(authorizationServerConfigurer.getEndpointsMatcher());
+        RequestMatcher endpointsMatcher = (request) -> !authorizationServerConfigurer.getEndpointsMatcher().matches(request);
+
         B3authUserAuthorizationConfigurer userAuthorizationConfigurer = new B3authUserAuthorizationConfigurer();
 
 

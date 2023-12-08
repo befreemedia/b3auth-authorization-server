@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e53289a4-bdae-4f92-a54c-3512afcf8f90" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authAuthorizationServerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configuration/B3authAuthorizationServerConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authAuthorizationServerConfigurer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authAuthorizationServerConfigurer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authClientAuthenticationConfigurer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authClientAuthenticationConfigurer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authUserAuthenticationAttemptConfigurer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authUserAuthenticationAttemptConfigurer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authUserAuthenticationConfigurer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authUserAuthenticationConfigurer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authUserAuthorizationConfigurer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/befree/b3authauthorizationserver/config/configurer/B3authUserAuthorizationConfigurer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +140,7 @@
       <workItem from="1701465511539" duration="21767000" />
       <workItem from="1701771515198" duration="2313000" />
       <workItem from="1701783286059" duration="1953000" />
-      <workItem from="1702027880820" duration="567000" />
+      <workItem from="1702027880820" duration="1268000" />
     </task>
     <servers />
   </component>
