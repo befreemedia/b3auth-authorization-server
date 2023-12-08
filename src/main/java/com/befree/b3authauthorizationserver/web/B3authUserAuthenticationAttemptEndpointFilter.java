@@ -108,8 +108,6 @@ public class B3authUserAuthenticationAttemptEndpointFilter extends OncePerReques
 
                 URL issuer = new URL(ISSUER);
 
-                json.addProperty("code", b3authAuthenticationAttemptToken.getCode());
-
                 var stringValue = json.toString();
 
                 response.setStatus(200);
