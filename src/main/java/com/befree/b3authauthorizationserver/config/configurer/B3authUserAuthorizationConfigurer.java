@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class B3authUserAuthorizationConfigurer extends AbstractB3authConfigurer{
+public class B3authUserAuthorizationConfigurer extends AbstractHttpConfigurer<B3authAuthorizationServerConfigurer, HttpSecurity> {
     private final List<AuthenticationConverter> authorizationRequestConverters = new ArrayList<>();
     private final List<AuthenticationProvider> authenticationProviders = new ArrayList<>();
 
@@ -27,12 +28,11 @@ public class B3authUserAuthorizationConfigurer extends AbstractB3authConfigurer{
     private AuthenticationFailureHandler errorResponseHandler;
     private SessionAuthenticationStrategy sessionAuthenticationStrategy;
 
-    B3authUserAuthorizationConfigurer(ObjectPostProcessor<Object> objectPostProcessor) {
-        super(objectPostProcessor);
-    }
+
+
 
     @Override
-    void init(HttpSecurity httpSecurity) {
+    public void init(HttpSecurity httpSecurity) {
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
         List<AuthenticationProvider> authenticationProviders = createDefaultAuthenticationProviders(httpSecurity);
@@ -45,7 +45,7 @@ public class B3authUserAuthorizationConfigurer extends AbstractB3authConfigurer{
     }
 
     @Override
-    void configure(HttpSecurity httpSecurity) {
+    public void configure(HttpSecurity httpSecurity) {
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
@@ -63,8 +63,6 @@ public class B3authUserAuthorizationConfigurer extends AbstractB3authConfigurer{
 
 
         httpSecurity.addFilterBefore(postProcess(userAuthorizationEndpointFilter), AnonymousAuthenticationFilter.class);
-
-        System.out.println("ADDED");
     }
 
     private static List<AuthenticationConverter> createDefaultAuthenticationConverters() {
