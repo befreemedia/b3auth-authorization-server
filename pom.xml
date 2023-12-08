@@ -10,8 +10,7 @@
 
     <name>b3auth-authorization-server</name>
     <description>
-        This project is custom authentication and authorization(!) library, that works with b3auth-resource-server.
-        It uses b3auth protocol and will be added to RFC soon.
+        This project is custom authentication and authorization(!) library, that works with b3auth-client-library.
     </description>
     <packaging>jar</packaging>
     <url>https://github.com/befreemedia/b3auth-authorization-server/</url>
@@ -27,8 +26,8 @@
         <developer>
             <name>Michał Chruścielski</name>
             <email>michal.chruscielski@befreemedia.co</email>
-            <organization>BeFree (unregistered organization)</organization>
-            <organizationUrl>https://befreemedia.co</organizationUrl>
+            <organization>DirectAI</organization>
+            <organizationUrl>https://directai.pl</organizationUrl>
         </developer>
     </developers>
 

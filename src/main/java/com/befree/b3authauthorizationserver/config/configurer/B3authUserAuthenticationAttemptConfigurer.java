@@ -27,7 +27,7 @@ public class B3authUserAuthenticationAttemptConfigurer extends AbstractB3authCon
     }
 
     @Override
-    void init(HttpSecurity httpSecurity) {
+    public void init(HttpSecurity httpSecurity) {
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
         List<AuthenticationProvider> authenticationProviders = createDefaultAuthenticationProviders(httpSecurity);
@@ -40,7 +40,7 @@ public class B3authUserAuthenticationAttemptConfigurer extends AbstractB3authCon
     }
 
     @Override
-    void configure(HttpSecurity httpSecurity) {
+    public void configure(HttpSecurity httpSecurity) {
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
         B3authAuthorizationServerSettings authorizationServerSettings = B3authConfigurationLoader.getAuthorizationServerSettings(httpSecurity);
 
