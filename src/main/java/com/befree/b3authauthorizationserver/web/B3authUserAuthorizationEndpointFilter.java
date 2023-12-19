@@ -102,6 +102,12 @@ public class B3authUserAuthorizationEndpointFilter extends OncePerRequestFilter 
 
             LoggerFactory.getLogger(B3authUserAuthorizationEndpointFilter.class).debug("manager success");
 
+            if(authenticationResult == null) {
+                filterChain.doFilter(request, response);
+
+                return;
+            }
+
             if (authenticationResult instanceof B3authAuthorizationToken) {
 
                 SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
