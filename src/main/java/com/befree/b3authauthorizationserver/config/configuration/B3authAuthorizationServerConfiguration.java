@@ -47,8 +47,6 @@ public class B3authAuthorizationServerConfiguration {
         B3authUserAuthorizationConfigurer userAuthorizationConfigurer = new B3authUserAuthorizationConfigurer();
         RequestMatcher endpointsMatcher = userAuthorizationConfigurer.getNegatedEndpointsMatcher();
 
-
-
         http.securityMatcher(endpointsMatcher).authorizeHttpRequests((authorize) -> {
             (authorize.anyRequest()).authenticated();
         }).apply(userAuthorizationConfigurer);

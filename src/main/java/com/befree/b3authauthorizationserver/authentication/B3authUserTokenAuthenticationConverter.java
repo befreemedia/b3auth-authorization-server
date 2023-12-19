@@ -16,9 +16,7 @@ public class B3authUserTokenAuthenticationConverter implements AuthenticationCon
         String authorizationHeader = request.getHeader("Authorization");
 
         if(authorizationHeader == null) {
-            throw new B3authAuthenticationException("Bad request",
-                    "Authorization header is required.",
-                    B3authAuthorizationServerExceptionCode.B4004);
+            return null;
         }
 
         if(!StringUtils.startsWithIgnoreCase(authorizationHeader, "bearer ")) {
