@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
@@ -47,9 +48,12 @@ public class B3authAuthorizationServerConfiguration {
         B3authUserAuthorizationConfigurer userAuthorizationConfigurer = new B3authUserAuthorizationConfigurer();
         RequestMatcher endpointsMatcher = userAuthorizationConfigurer.getNegatedEndpointsMatcher();
 
-        http.securityMatcher(endpointsMatcher).authorizeHttpRequests((authorize) -> {
-            (authorize.anyRequest()).authenticated();
-        }).apply(userAuthorizationConfigurer);
+        http.securityMatcher(endpointsMatcher)
+                .authorizeHttpRequests((authorize) -> {
+                    (authorize.anyRequest()).authenticated();
+                })
+                .csrf(AbstractHttpConfigurer::disable)
+                .apply(userAuthorizationConfigurer);
     }
 
     @Bean
